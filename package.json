@@ -1,6 +1,7 @@
 {
   "name": "react_01.24",
   "private": true,
+  "homepage": "https://evgeniy558.github.io/React_01.24/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -9,7 +10,9 @@
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config./.prettierrc",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "eslint-config-prettier": "^9.1.0",
