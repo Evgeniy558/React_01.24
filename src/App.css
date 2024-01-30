@@ -1,6 +1,22 @@
 #root {
   max-width: 1280px;
+  height: 100vh;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 2rem;
+
   text-align: center;
+}
+.header {
+  height: 300px;
+
+  background-repeat: no-repeat;
+  background-image: url('./assets/images/backGroundFoneTop.png');
+  background-size: cover;
+}
+
+.footer {
+  height: 300px;
+  background-repeat: no-repeat;
+  background-image: url('./assets/images/backGroundFoneBottom.png');
+  background-size: cover;
 }
