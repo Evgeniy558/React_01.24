@@ -1,10 +1,13 @@
+import css from './SelectInput.module.css'
 const SelectInput = ({ inputText, name, data = ['History', 'Politics'] }) => {
   return (
-    <div>
-      <label htmlFor={name}> {inputText} </label>
-      <select name={name} id={name}>
+    <div className={css.selectInputContainer}>
+      <label htmlFor={name} className={css.lable}>
+        {inputText}
+      </label>
+      <select name={name} id={name} className={css.selectEl}>
         {data.map((el, index) => (
-          <option value={el} key={index}>
+          <option value={el} key={index} className={css.option}>
             {el}
           </option>
         ))}

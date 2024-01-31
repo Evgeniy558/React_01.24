@@ -1,0 +1,25 @@
+.inputContainer {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+.lable {
+  display: flex;
+  flex-direction: column;
+}
+.lable:hover {
+  cursor: pointer;
+}
+
+.inputEl {
+  display: block;
+  height: 2rem;
+  font-size: 1rem;
+  border-radius: 1.5rem;
+  padding-left: 0.5rem;
+}
+.inputEl::placeholder {
+  color: rgb(228, 224, 224);
+}
