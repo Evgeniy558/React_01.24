@@ -1,18 +1,16 @@
+/* eslint-disable prettier/prettier */
 import Button from '../../components/Button/Button'
 import SelectInput from '../../components/SelectInput/SelectInput'
 import css from './Home.module.css'
 import Input from '../../components/Input/Input'
-import { useEffect } from 'react'
+
 const Home = () => {
-  useEffect(() => {
-    console.log('render')
-  }, [])
   return (
     <section>
       <h1 className={css.title}>QUIZ TIME</h1>
       <p>For starting quiz choose:</p>
       <div className={css.formContainer}>
-        <Input inputText="Enter number of questions" name="numOfQuestions" />
+        <Input inputText="Number of questions" name="numOfQuestions" />
         <div className={css.inputContainer}>
           <SelectInput inputText="Category:" name="category" />
           <SelectInput
