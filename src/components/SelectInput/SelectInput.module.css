@@ -1,0 +1,25 @@
+.selectInputContainer {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  justify-content: center;
+}
+.lable {
+  display: flex;
+  flex-direction: column;
+}
+
+.selectEl {
+  display: block;
+  height: 2rem;
+  font-size: 1rem;
+  padding: 0.3rem;
+  border-radius: 1rem;
+}
+.selectEl:hover {
+  cursor: pointer;
+}
+.option {
+  border-radius: 0.3rem;
+}

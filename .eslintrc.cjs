@@ -6,8 +6,8 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
-    'plugin:prettier/recommended',
-    ' rules: {"prettier/prettier": "error"}'
+    'plugin:prettier/recommended'
+    // ' rules: {"prettier/prettier": "error"}'
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },

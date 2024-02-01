@@ -1,0 +1,31 @@
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: rgb(0, 51, 0);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 65, 0, 0.5) 0%,
+    rgba(47, 250, 20, 0.5) 50%,
+    rgba(0, 65, 0, 0.5) 100%
+  );
+}
+.formContainer {
+  width: 50%;
+}
+.title {
+  margin: 0;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+.buttonContainer {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
