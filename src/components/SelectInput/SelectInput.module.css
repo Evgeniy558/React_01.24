@@ -1,8 +1,6 @@
 .selectInputContainer {
   display: flex;
   flex-direction: column;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
   justify-content: center;
 }
 .lable {
