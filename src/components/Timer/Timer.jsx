@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import css from './Timer.module.css'
 import Button from '../Button/Button'
 
-const Timer = ({ time = 9 }) => {
+const Timer = ({ time = 1 }) => {
   const [minutes, setMinutes] = useState(time)
   const [seconds, setSeconds] = useState(0)
-  const [isRunnning, setIsRunning] = useState(null)
+  const [isRunning, setIsRunning] = useState(false)
+  const interval = useRef(null)
   useEffect(() => {
-    let interval
-    if (isRunnning) {
-      interval = setInterval(() => {
+    if (isRunning) {
+      interval.current = setInterval(() => {
         if (seconds > 0) {
           setSeconds(seconds - 1)
         } else if (minutes > 0) {
@@ -17,9 +17,9 @@ const Timer = ({ time = 9 }) => {
           setSeconds(59)
         }
       }, 1000)
-      return () => clearInterval(interval)
+      return () => clearInterval(interval.current)
     }
-  }, [minutes, seconds, isRunnning])
+  }, [minutes, seconds, isRunning])
 
   const handleClick = () => {
     setIsRunning(true)

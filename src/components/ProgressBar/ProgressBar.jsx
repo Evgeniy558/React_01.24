@@ -2,9 +2,8 @@ import css from './ProgressBar.module.css'
 const ProgressBar = ({ numberOfCurrentQuestion, numberOfQuestions }) => {
   const progressPercentage =
     numberOfCurrentQuestion > numberOfQuestions
-      ? 1
-      : (numberOfCurrentQuestion - 1) / numberOfQuestions
-  console.log(Math.floor(progressPercentage * 100))
+      ? 1 * 100
+      : ((numberOfCurrentQuestion - 1) / numberOfQuestions) * 100
 
   return (
     <div className={css.container}>
@@ -16,7 +15,7 @@ const ProgressBar = ({ numberOfCurrentQuestion, numberOfQuestions }) => {
       <div className={css.progressBar}>
         <div
           className={css.progressBarFill}
-          style={{ width: `${Math.floor(progressPercentage * 100)}%` }}></div>
+          style={{ width: `${Math.floor(progressPercentage)}%` }}></div>
       </div>
       <div className={css.progressLable}></div>
     </div>
