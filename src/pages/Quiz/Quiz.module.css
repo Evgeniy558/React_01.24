@@ -1,0 +1,16 @@
+.quastionContainer {
+  padding: 20px 50px;
+}
+.buttonsContainer {
+  padding: 50px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 25px;
+  grid-row-gap: 50px;
+}
+.buttonsContainer > * {
+  width: 500px;
+}
+.progressBarContainer {
+}
