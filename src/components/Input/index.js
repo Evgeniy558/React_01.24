@@ -1,1 +1,1 @@
-export * from './Input.module.css'
+export * from './Input.jsx'

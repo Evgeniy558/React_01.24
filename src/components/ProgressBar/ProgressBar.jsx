@@ -11,7 +11,7 @@ const ProgressBar = ({ numberOfCurrentQuestion, numberOfQuestions }) => {
         Progress <br /> Question{' '}
         {numberOfCurrentQuestion >= numberOfQuestions ? numberOfQuestions : numberOfCurrentQuestion}{' '}
         of {numberOfQuestions}
-      </p>{' '}
+      </p>
       <div className={css.progressBar}>
         <div
           className={css.progressBarFill}
