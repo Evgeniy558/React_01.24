@@ -1,8 +1,8 @@
 export const DIFFICULTY = [
-  { id: 'name-id-1', name: 'Any Difficulty' },
-  { id: 'name-id-2', name: 'Easy' },
-  { id: 'name-id-3', name: 'Medium' },
-  { id: 'name-id-4', name: 'Hard' }
+  { id: 'difficulty-id-1', name: 'Any Difficulty' },
+  { id: 'difficulty-id-2', name: 'Easy' },
+  { id: 'difficulty-id-3', name: 'Medium' },
+  { id: 'difficulty-id-4', name: 'Hard' }
 ]
 
 export const TYPE = [
