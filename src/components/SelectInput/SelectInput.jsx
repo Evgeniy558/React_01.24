@@ -9,7 +9,7 @@ const SelectInput = ({ inputText, name, data }) => {
         <option value={''} disabled>
           - Select {name} -
         </option>
-        {data.length > 0 &&
+        {data.length &&
           data.map((el) => (
             <option value={el.name} key={el.id} className={css.option}>
               {el.name}
