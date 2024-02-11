@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import css from './Timer.module.css'
 import Button from '../Button/Button'
+import { useRedirectTo } from '../../hooks/useRedirectTo'
+import { ROUTES } from '../../navigation/routes'
 
-const Timer = ({ time = 1 }) => {
+const Timer = ({ time }) => {
   const [minutes, setMinutes] = useState(time)
   const [seconds, setSeconds] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
   const interval = useRef(null)
+  const redirectToResultsPage = useRedirectTo(ROUTES.results)
+
   useEffect(() => {
     if (isRunning) {
       interval.current = setInterval(() => {
@@ -14,8 +18,8 @@ const Timer = ({ time = 1 }) => {
           setSeconds(seconds - 1)
         } else if (minutes > 0) {
           setMinutes(minutes - 1)
-          setSeconds(59)
-        }
+          setSeconds(9)
+        } else redirectToResultsPage()
       }, 1000)
       return () => clearInterval(interval.current)
     }

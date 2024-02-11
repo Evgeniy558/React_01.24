@@ -7,8 +7,12 @@ import getToken from '../../services/getToken'
 import { useEffect, useState } from 'react'
 import getCategories from '../../services/getCategories'
 import { DIFFICULTY, TIME, TYPE } from '../../components/SelectInput/SelectInput.constants'
+import { ROUTES } from '../../navigation/routes'
+import { useRedirectTo } from '../../hooks/useRedirectTo'
 
 const Home = () => {
+  const redirectToStatisticsPage = useRedirectTo(ROUTES.statistics)
+  const redirectToQuizPage = useRedirectTo(ROUTES.quiz)
   const [categories, setCategories] = useState([])
   useEffect(() => {
     let ignore = false
@@ -22,6 +26,13 @@ const Home = () => {
       ignore = true
     }
   }, [])
+
+  const handleStart = () => {
+    getToken()
+    redirectToQuizPage()
+    console.log('setState [isRunning] on true')
+    console.log('request for quiz data')
+  }
 
   return (
     <>
@@ -38,8 +49,8 @@ const Home = () => {
           </div>
         </div>
         <div className={css.buttonContainer}>
-          <Button textButton="Start quiz" onClick={getToken} />
-          <Button textButton="See my statistics" />
+          <Button textButton="Start quiz" onClick={handleStart} />
+          <Button textButton="See my statistics" onClick={redirectToStatisticsPage} />
         </div>
       </section>
     </>

@@ -9,3 +9,6 @@
 .buttonsContainer > * {
   width: 500px;
 }
+.modal {
+  position: relative;
+}
