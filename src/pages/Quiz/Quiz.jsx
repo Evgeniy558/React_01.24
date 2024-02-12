@@ -1,13 +1,17 @@
-import { useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import Button from '../../components/Button/Button'
 import ProgressBar from '../../components/ProgressBar/ProgressBar'
 import css from './Quiz.module.css'
 import Timer from '../../components/Timer/Timer'
-
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '../../navigation/routes'
+import { useRedirectTo } from '../../hooks/useRedirectTo'
+import ModalWindow from '../../components/ModalWindow/ModalWindow'
+export const ModalWindowContext = createContext()
 const Quiz = ({
-  question,
+  question = 'Question text:  Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, porro cupiditate, corporis at saepe recusandae nemo numquam officiis ducimus nobis dolor cum minima voluptas quidem sapiente est eligendi eius corrupti!',
   typeOfQuiz = 'multiple',
-  numberOfQuestions = 15,
+  numberOfQuestions = 3,
   answerChoices = [
     'one  Question text:  Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, porro cupiditat',
     'two',
@@ -15,7 +19,17 @@ const Quiz = ({
     'four'
   ]
 }) => {
+  const navigate = useNavigate()
   const [numberOfCurrentQuestion, setNumberOfCurrentQuestion] = useState(1)
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const redirectToResults = useRedirectTo(ROUTES.results)
+
+  useEffect(() => {
+    if (numberOfCurrentQuestion > numberOfQuestions) {
+      redirectToResults()
+    }
+  }, [numberOfCurrentQuestion, numberOfQuestions, navigate])
+
   const handleButtonClick = () => {
     numberOfCurrentQuestion - 1 < numberOfQuestions
       ? setNumberOfCurrentQuestion(numberOfCurrentQuestion + 1)
@@ -23,16 +37,24 @@ const Quiz = ({
   }
 
   const handleEndQuiz = () => {
-    console.log('rederect to...')
+    setModalIsOpen(!modalIsOpen)
   }
 
   return (
     <>
+      {modalIsOpen ? (
+        <ModalWindowContext.Provider value={{ modalIsOpen, setModalIsOpen }}>
+          <div className={css.modal}>
+            <ModalWindow />
+          </div>
+        </ModalWindowContext.Provider>
+      ) : null}
+
       <section className={css.quizContainer}>
         <h2>Quiz page</h2>
-        <div className={css.quastionContainer}>{question}</div>
+        <div className={css.questionContainer}>{question}</div>
         <div className={css.time}>
-          <Timer></Timer>
+          <Timer time={1}></Timer>
         </div>
         <div>
           <div
@@ -55,7 +77,7 @@ const Quiz = ({
           />
         </div>
 
-        <Button textButton={'End quiz'} onClick={handleEndQuiz}></Button>
+        <Button textButton={'End quiz'} onClick={handleEndQuiz} hoverColor="red"></Button>
       </section>
     </>
   )

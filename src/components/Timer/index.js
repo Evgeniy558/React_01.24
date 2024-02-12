@@ -1,1 +1,1 @@
-export * from './QuizTimer.jsx'
+export * from './Timer.jsx'

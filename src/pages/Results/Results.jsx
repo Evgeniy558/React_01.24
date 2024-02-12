@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { SvgSelector } from '../../components/SvgSelector/SvgSelector'
 import css from './Results.module.css'
 import Button from '../../components/Button/Button'
+import { useRedirectTo } from '../../hooks/useRedirectTo'
+import { ROUTES } from '../../navigation/routes'
 const Results = ({
   type = 'type',
   category = 'category',
@@ -11,6 +13,8 @@ const Results = ({
   rightAnswers = 1,
   numberOfQuestions = 15
 }) => {
+  const redirectToHomePage = useRedirectTo(ROUTES.home)
+  const redirectToQuizPage = useRedirectTo(ROUTES.quiz)
   const [isPasted, setIsPasted] = useState(false)
   const PASSINGSCORE = 80
   let result = (rightAnswers / numberOfQuestions) * 100
@@ -21,10 +25,11 @@ const Results = ({
   }, [result])
 
   const handleRestartQuiz = () => {
-    console.log('Start quiz')
+    redirectToQuizPage()
+    console.log('get data quiz from server')
   }
   const handleAnotherQuiz = () => {
-    console.log('navigate the user to quiz configuration screen')
+    redirectToHomePage()
   }
 
   return (

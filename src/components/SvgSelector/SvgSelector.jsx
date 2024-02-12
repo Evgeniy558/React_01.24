@@ -30,7 +30,6 @@ export const SvgSelector = ({ id }) => {
           />
         </svg>
       )
-
     default:
       break
   }
