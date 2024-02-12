@@ -34,24 +34,27 @@ const Quiz = ({
         <div className={css.time}>
           <Timer></Timer>
         </div>
-        <div
-          className={css.buttonsContainer}
-          style={typeOfQuiz !== 'multiple' ? { gridTemplateRows: 'repeat(1, 1fr)' } : {}}>
-          {typeOfQuiz === 'multiple' ? (
-            answerChoices.map((el, index) => (
-              <Button key={index} textButton={el} onClick={handleButtonClick}></Button>
-            ))
-          ) : (
-            <>
-              <Button textButton="True" onClick={handleButtonClick}></Button>
-              <Button textButton="False" onClick={handleButtonClick}></Button>
-            </>
-          )}
+        <div>
+          <div
+            className={css.buttonsContainer}
+            style={typeOfQuiz !== 'multiple' ? { gridTemplateRows: 'repeat(1, 1fr)' } : {}}>
+            {typeOfQuiz === 'multiple' ? (
+              answerChoices.map((el, index) => (
+                <Button key={index} textButton={el} onClick={handleButtonClick}></Button>
+              ))
+            ) : (
+              <>
+                <Button textButton="True" onClick={handleButtonClick}></Button>
+                <Button textButton="False" onClick={handleButtonClick}></Button>
+              </>
+            )}
+          </div>
+          <ProgressBar
+            numberOfCurrentQuestion={numberOfCurrentQuestion}
+            numberOfQuestions={numberOfQuestions}
+          />
         </div>
-        <ProgressBar
-          numberOfCurrentQuestion={numberOfCurrentQuestion}
-          numberOfQuestions={numberOfQuestions}
-        />
+
         <Button textButton={'End quiz'} onClick={handleEndQuiz}></Button>
       </section>
     </>

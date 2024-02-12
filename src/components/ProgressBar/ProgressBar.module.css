@@ -1,5 +1,6 @@
 .container {
-  width: 80%;
+  padding-left: 50px;
+  padding-right: 50px;
 }
 .progressBar {
   width: 100%;
@@ -16,9 +17,9 @@
 }
 
 .progressLable {
-  padding: 1.5rem;
+  padding: 1rem;
 }
 .text {
   margin: 0;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1rem;
 }

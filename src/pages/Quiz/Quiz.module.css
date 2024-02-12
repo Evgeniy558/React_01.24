@@ -1,6 +1,3 @@
-.quastionContainer {
-  padding: 20px 50px;
-}
 .buttonsContainer {
   padding: 50px;
   display: grid;
@@ -11,6 +8,4 @@
 }
 .buttonsContainer > * {
   width: 500px;
-}
-.progressBarContainer {
 }

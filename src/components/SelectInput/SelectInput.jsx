@@ -1,16 +1,20 @@
 import css from './SelectInput.module.css'
-const SelectInput = ({ inputText, name, data = ['History', 'Politics'] }) => {
+const SelectInput = ({ inputText, name, data }) => {
   return (
     <div className={css.selectInputContainer}>
-      <label htmlFor={name} className={css.lable}>
+      <label htmlFor={name} className={css.label}>
         {inputText}
       </label>
-      <select name={name} id={name} className={css.selectEl}>
-        {data.map((el, index) => (
-          <option value={el} key={index} className={css.option}>
-            {el}
-          </option>
-        ))}
+      <select name={name} id={name} className={css.selectEl} defaultValue="">
+        <option value={''} disabled>
+          - Select {name} -
+        </option>
+        {data.length &&
+          data.map((el) => (
+            <option value={el.name} key={el.id} className={css.option}>
+              {el.name}
+            </option>
+          ))}
       </select>
     </div>
   )

@@ -3,9 +3,26 @@ import Button from '../../components/Button/Button'
 import SelectInput from '../../components/SelectInput/SelectInput'
 import css from './Home.module.css'
 import Input from '../../components/Input/Input'
-import Quiz from '../Quiz/Quiz'
+import getToken from '../../services/getToken'
+import { useEffect, useState } from 'react'
+import getCategories from '../../services/getCategories'
+import { DIFFICULTY, TIME, TYPE } from '../../components/SelectInput/SelectInput.constants'
 
 const Home = () => {
+  const [categories, setCategories] = useState([])
+  useEffect(() => {
+    let ignore = false
+    const fetchCategories = async () => {
+      if (!ignore) {
+        setCategories(await getCategories())
+      }
+    }
+    fetchCategories()
+    return () => {
+      ignore = true
+    }
+  }, [])
+
   return (
     <>
       <section>
@@ -14,33 +31,17 @@ const Home = () => {
         <div className={css.formContainer}>
           <Input inputText="Number of questions" name="numOfQuestions" />
           <div className={css.inputContainer}>
-            <SelectInput inputText="Category:" name="category" />
-            <SelectInput
-              inputText="Difficulty:"
-              name="difficulty"
-              data={['Any Difficulty', 'Easy', 'Medium', 'Hard']}
-            />
-            <SelectInput
-              inputText="Select type:"
-              name="type"
-              data={['Any type', 'Multiple choice', 'TrueFalse']}
-            />
-            <SelectInput
-              inputText="Time:"
-              name="time"
-              data={['1 minute', '2 minute', '3 minute']}
-            />
+            <SelectInput inputText="Category:" name="category" data={categories} />
+            <SelectInput inputText="Difficulty:" name="difficulty" data={DIFFICULTY} />
+            <SelectInput inputText="Select type:" name="type" data={TYPE} />
+            <SelectInput inputText="Time:" name="time" data={TIME} />
           </div>
         </div>
         <div className={css.buttonContainer}>
-          <Button textButton="Start quiz" />
+          <Button textButton="Start quiz" onClick={getToken} />
           <Button textButton="See my statistics" />
         </div>
-      </section>{' '}
-      <Quiz
-        question={
-          'Question text:  Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, porro cupiditate, corporis at saepe recusandae nemo numquam officiis ducimus nobis dolor cum minima voluptas quidem sapiente est eligendi eius corrupti!'
-        }></Quiz>
+      </section>
     </>
   )
 }
