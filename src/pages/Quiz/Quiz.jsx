@@ -3,10 +3,10 @@ import Button from '../../components/Button/Button'
 import ProgressBar from '../../components/ProgressBar/ProgressBar'
 import css from './Quiz.module.css'
 import Timer from '../../components/Timer/Timer'
-import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../navigation/routes'
 import { useRedirectTo } from '../../hooks/useRedirectTo'
 import ModalWindow from '../../components/ModalWindow/ModalWindow'
+import { useSelector } from 'react-redux'
 export const ModalWindowContext = createContext()
 const Quiz = ({
   question = 'Question text:  Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, porro cupiditate, corporis at saepe recusandae nemo numquam officiis ducimus nobis dolor cum minima voluptas quidem sapiente est eligendi eius corrupti!',
@@ -19,16 +19,18 @@ const Quiz = ({
     'four'
   ]
 }) => {
-  const navigate = useNavigate()
   const [numberOfCurrentQuestion, setNumberOfCurrentQuestion] = useState(1)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const redirectToResults = useRedirectTo(ROUTES.results)
+
+  const testStoreQuiz = useSelector((state) => state.configuration.amount)
+  console.log('testStoreQuiz', testStoreQuiz)
 
   useEffect(() => {
     if (numberOfCurrentQuestion > numberOfQuestions) {
       redirectToResults()
     }
-  }, [numberOfCurrentQuestion, numberOfQuestions, navigate])
+  }, [numberOfCurrentQuestion, numberOfQuestions])
 
   const handleButtonClick = () => {
     numberOfCurrentQuestion - 1 < numberOfQuestions
@@ -54,7 +56,7 @@ const Quiz = ({
         <h2>Quiz page</h2>
         <div className={css.questionContainer}>{question}</div>
         <div className={css.time}>
-          <Timer time={1}></Timer>
+          <Timer></Timer>
         </div>
         <div>
           <div

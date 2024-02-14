@@ -2,8 +2,7 @@ import { useNavigate } from 'react-router-dom'
 
 export const useRedirectTo = (url) => {
   const navigate = useNavigate()
-  const redirectTo = () => {
+  return () => {
     navigate(url)
   }
-  return redirectTo
 }

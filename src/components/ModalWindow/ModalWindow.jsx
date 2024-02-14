@@ -7,6 +7,7 @@ import { ModalWindowContext } from '../../pages/Quiz'
 
 const ModalWindow = () => {
   const redirectToHome = useRedirectTo(ROUTES.home)
+
   const { modalIsOpen, setModalIsOpen } = useContext(ModalWindowContext)
   useEffect(() => {
     const handleEsc = (e) => {
