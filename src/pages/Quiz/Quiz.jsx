@@ -61,7 +61,8 @@ const Quiz = ({
         <div>
           <div
             className={css.buttonsContainer}
-            style={typeOfQuiz !== 'multiple' ? { gridTemplateRows: 'repeat(1, 1fr)' } : {}}>
+            style={typeOfQuiz !== 'multiple' ? { gridTemplateRows: 'repeat(1, 1fr)' } : {}}
+          >
             {typeOfQuiz === 'multiple' ? (
               answerChoices.map((el, index) => (
                 <Button key={index} textButton={el} onClick={handleButtonClick}></Button>

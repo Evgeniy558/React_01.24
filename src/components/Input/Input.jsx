@@ -13,7 +13,8 @@ const Input = forwardRef(function Input({ inputText }, ref) {
           className={css.inputEl}
           min={5}
           max={15}
-          placeholder="Min 5 max 15"></input>
+          placeholder="Min 5 max 15"
+        ></input>
       </label>
     </div>
   )
