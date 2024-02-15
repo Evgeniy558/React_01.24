@@ -20,7 +20,7 @@ const timerSlice = createSlice({
         state.secondsLeft--
       } else if (state.minutesLeft > 0) {
         state.minutesLeft--
-        state.secondsLeft = 59
+        state.secondsLeft = 9
       } else state.isRunning = false
     },
     stopTimer(state) {

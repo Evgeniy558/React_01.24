@@ -17,11 +17,8 @@ const Quiz = ({
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const redirectToResults = useRedirectTo(ROUTES.results)
 
-  const currentQuestion = useSelector((state) => state.quiz.currentQuestion)
-  const numberOfQuestions = useSelector((state) => state.quiz.questions.length)
-  const questions = useSelector((state) => state.quiz.questions)
-
-  const dispatch = useDispatch()
+  const testStoreQuiz = useSelector((state) => state.configuration.amount)
+  console.log('testStoreQuiz', testStoreQuiz)
 
   useEffect(() => {
     if (currentQuestion > numberOfQuestions) {
