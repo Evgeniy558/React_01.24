@@ -1,14 +1,12 @@
 export const DIFFICULTY = [
-  { id: 'difficulty-id-1', name: 'Any Difficulty', value: '' },
-  { id: 'difficulty-id-2', name: 'Easy', value: 'easy' },
-  { id: 'difficulty-id-3', name: 'Medium', value: 'medium' },
-  { id: 'difficulty-id-4', name: 'Hard', value: 'hard' }
+  { id: 'difficulty-id-1', name: 'Easy', value: 'easy' },
+  { id: 'difficulty-id-2', name: 'Medium', value: 'medium' },
+  { id: 'difficulty-id-3', name: 'Hard', value: 'hard' }
 ]
 
 export const TYPE = [
-  { id: 'type-id-1', name: 'Any type', value: '' },
-  { id: 'type-id-2', name: 'Multiple choice', value: 'multiple' },
-  { id: 'type-id-3', name: 'TrueFalse', value: 'boolean' }
+  { id: 'type-id-1', name: 'Multiple choice', value: 'multiple' },
+  { id: 'type-id-2', name: 'TrueFalse', value: 'boolean' }
 ]
 
 export const TIME = [

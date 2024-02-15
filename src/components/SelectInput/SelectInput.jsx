@@ -1,12 +1,16 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react'
 import css from './SelectInput.module.css'
-const SelectInput = forwardRef(function Selector({ inputText, name, data, behavior }, ref) {
+const SelectInput = forwardRef(function SelectorInput({ inputText, name, data, behavior }, ref) {
   const selectRef = useRef(null)
 
   useImperativeHandle(ref, () => ({
     getValue: () => {
       const selectedOption = selectRef.current[selectRef.current.selectedIndex]
-      return behavior === 'id' ? selectedOption.getAttribute('id') : selectedOption.value
+      return behavior === 'id'
+        ? selectedOption.getAttribute('id')
+        : selectedOption.value
+          ? selectedOption.value
+          : `${name} not chosen`
     }
   }))
 
