@@ -4,15 +4,16 @@ import css from './Results.module.css'
 import Button from '../../components/Button/Button'
 import { useRedirectTo } from '../../hooks/useRedirectTo'
 import { ROUTES } from '../../navigation/routes'
-const Results = ({
-  type = 'type',
-  category = 'category',
-  time = 'time',
-  difficulty = 'difficulty',
-  timeSpent = '2:10',
-  rightAnswers = 1,
-  numberOfQuestions = 15
-}) => {
+import { useSelector } from 'react-redux'
+
+const Results = ({ rightAnswers = 1, numberOfQuestions = 15 }) => {
+  const type = useSelector((state) => state.configuration.type)
+  const difficulty = useSelector((state) => state.configuration.difficulty)
+  const category = useSelector((state) => state.configuration.category)
+  const time = useSelector((state) => state.configuration.time)
+  const timeSpent = useSelector((state) => state.configuration.quizTime)
+  let spendMinutes = parseFloat(timeSpent / 60)
+
   const redirectToHomePage = useRedirectTo(ROUTES.home)
   const redirectToQuizPage = useRedirectTo(ROUTES.quiz)
   const [isPasted, setIsPasted] = useState(false)
@@ -37,7 +38,7 @@ const Results = ({
       <h2>Quiz Results</h2>
       <p className={css.text}>Thank you for completing this quiz. </p>
       <p className={css.text}>
-        You spent {timeSpent} minutes taking the test. Here are your results.
+        You spent {spendMinutes} minutes taking the test. Here are your results.
       </p>
       <div className={css.resultsInfo}>
         <div className={css.configContainer}>
