@@ -11,13 +11,15 @@ import { showNextQuestion } from '../../redux/slices/quizSlice'
 import { stopTimer } from '../../redux/slices/timerSlice'
 
 export const ModalWindowContext = createContext()
-const Quiz = ({
-  question = 'Question text:  Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, porro cupiditate, corporis at saepe recusandae nemo numquam officiis ducimus nobis dolor cum minima voluptas quidem sapiente est eligendi eius corrupti!'
-}) => {
+const Quiz = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const redirectToResults = useRedirectTo(ROUTES.results)
-
+  const dispatch = useDispatch()
   const testStoreQuiz = useSelector((state) => state.configuration.amount)
+  const currentQuestion = useSelector((state) => state.quiz.currentQuestion)
+  const numberOfQuestions = useSelector((state) => state.quiz.questions.length)
+  const questions = useSelector((state) => state.quiz.questions)
+
   console.log('testStoreQuiz', testStoreQuiz)
 
   useEffect(() => {
@@ -47,7 +49,9 @@ const Quiz = ({
 
       <section className={css.quizContainer}>
         <h2>Quiz page</h2>
-        <div className={css.questionContainer}>{question}</div>
+        <div className={css.questionContainer}>
+          {currentQuestion <= numberOfQuestions && questions[currentQuestion - 1].question}
+        </div>
         <div className={css.time}>
           <Timer></Timer>
         </div>
