@@ -3,7 +3,7 @@ import css from './Timer.module.css'
 import { useRedirectTo } from '../../hooks/useRedirectTo'
 import { ROUTES } from '../../navigation/routes'
 import { useDispatch, useSelector } from 'react-redux'
-import { decrementTime } from '../../redux/slices/timerSlice'
+import { decrementTime, stopTimer } from '../../redux/slices/timerSlice'
 
 const Timer = () => {
   const interval = useRef(null)
@@ -22,6 +22,7 @@ const Timer = () => {
       return () => clearInterval(interval.current)
     }
     if (minutes === 0 && seconds === 0) {
+      dispatch(stopTimer())
       redirectToResultsPage()
     }
   }, [testIsRunning, dispatch])

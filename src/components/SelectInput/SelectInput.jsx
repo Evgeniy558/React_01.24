@@ -7,7 +7,10 @@ const SelectInput = forwardRef(function SelectorInput({ inputText, name, data, b
     getValue: () => {
       const selectedOption = selectRef.current[selectRef.current.selectedIndex]
       return behavior === 'id'
-        ? selectedOption.getAttribute('id')
+        ? {
+            id: selectedOption.getAttribute('id'),
+            value: selectedOption.value ? selectedOption.value : `${name} not chosen`
+          }
         : selectedOption.value
           ? selectedOption.value
           : `${name} not chosen`

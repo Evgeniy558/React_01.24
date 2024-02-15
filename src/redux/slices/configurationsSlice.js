@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-const initialState = { amount: null, category: null, difficulty: '', type: '', time: null }
+const initialState = {
+  amount: null,
+  category: null,
+  difficulty: '',
+  type: { id: null, value: '' },
+  time: null
+}
 
 const configurationsSlice = createSlice({
   name: 'configurations',

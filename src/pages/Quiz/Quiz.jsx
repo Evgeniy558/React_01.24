@@ -6,33 +6,32 @@ import Timer from '../../components/Timer/Timer'
 import { ROUTES } from '../../navigation/routes'
 import { useRedirectTo } from '../../hooks/useRedirectTo'
 import ModalWindow from '../../components/ModalWindow/ModalWindow'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { showNextQuestion } from '../../redux/slices/quizSlice'
+import { stopTimer } from '../../redux/slices/timerSlice'
+
 export const ModalWindowContext = createContext()
 const Quiz = ({
-  question = 'Question text:  Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, porro cupiditate, corporis at saepe recusandae nemo numquam officiis ducimus nobis dolor cum minima voluptas quidem sapiente est eligendi eius corrupti!',
-  typeOfQuiz = 'multiple',
-  numberOfQuestions = 3,
-  answerChoices = [
-    'one  Question text:  Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, porro cupiditat',
-    'two',
-    'three',
-    'four'
-  ]
+  question = 'Question text:  Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, porro cupiditate, corporis at saepe recusandae nemo numquam officiis ducimus nobis dolor cum minima voluptas quidem sapiente est eligendi eius corrupti!'
 }) => {
-  const [numberOfCurrentQuestion, setNumberOfCurrentQuestion] = useState(1)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const redirectToResults = useRedirectTo(ROUTES.results)
 
+  const currentQuestion = useSelector((state) => state.quiz.currentQuestion)
+  const numberOfQuestions = useSelector((state) => state.quiz.questions.length)
+  const questions = useSelector((state) => state.quiz.questions)
+
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    if (numberOfCurrentQuestion > numberOfQuestions) {
+    if (currentQuestion > numberOfQuestions) {
+      dispatch(stopTimer())
       redirectToResults()
     }
-  }, [numberOfCurrentQuestion, numberOfQuestions])
+  }, [currentQuestion, numberOfQuestions])
 
   const handleButtonClick = () => {
-    numberOfCurrentQuestion - 1 < numberOfQuestions
-      ? setNumberOfCurrentQuestion(numberOfCurrentQuestion + 1)
-      : null
+    dispatch(showNextQuestion())
   }
 
   const handleEndQuiz = () => {
@@ -58,21 +57,29 @@ const Quiz = ({
         <div>
           <div
             className={css.buttonsContainer}
-            style={typeOfQuiz !== 'multiple' ? { gridTemplateRows: 'repeat(1, 1fr)' } : {}}
-          >
-            {typeOfQuiz === 'multiple' ? (
-              answerChoices.map((el, index) => (
-                <Button key={index} textButton={el} onClick={handleButtonClick}></Button>
-              ))
-            ) : (
+            style={
+              currentQuestion <= numberOfQuestions &&
+              questions[currentQuestion - 1].type !== 'multiple'
+                ? { gridTemplateRows: 'repeat(1, 1fr)' }
+                : {}
+            }>
+            {
               <>
-                <Button textButton="True" onClick={handleButtonClick}></Button>
-                <Button textButton="False" onClick={handleButtonClick}></Button>
+                {currentQuestion <= numberOfQuestions &&
+                  questions[currentQuestion - 1].incorrect_answers.map((el, index) => (
+                    <Button key={index} textButton={el} onClick={handleButtonClick}></Button>
+                  ))}
+                <Button
+                  textButton={
+                    currentQuestion <= numberOfQuestions &&
+                    questions[currentQuestion - 1].correct_answer
+                  }
+                  onClick={handleButtonClick}></Button>
               </>
-            )}
+            }
           </div>
           <ProgressBar
-            numberOfCurrentQuestion={numberOfCurrentQuestion}
+            numberOfCurrentQuestion={currentQuestion}
             numberOfQuestions={numberOfQuestions}
           />
         </div>

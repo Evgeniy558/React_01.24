@@ -6,16 +6,17 @@ import { useRedirectTo } from '../../hooks/useRedirectTo'
 import { ROUTES } from '../../navigation/routes'
 import { useSelector } from 'react-redux'
 
-const Results = ({ rightAnswers = 1, numberOfQuestions = 15 }) => {
+const Results = ({ rightAnswers = 1 }) => {
   const type = useSelector((state) => state.configuration.type)
   const difficulty = useSelector((state) => state.configuration.difficulty)
   const category = useSelector((state) => state.configuration.category)
   const time = useSelector((state) => state.configuration.time)
-  const timeSpent = useSelector((state) => state.configuration.quizTime)
-  let spendMinutes = parseFloat(timeSpent / 60)
+  const numberOfQuestions = useSelector((state) => state.quiz.questions.length)
+  const quizTime = useSelector((state) => state.timer.quizTime)
 
   const redirectToHomePage = useRedirectTo(ROUTES.home)
   const redirectToQuizPage = useRedirectTo(ROUTES.quiz)
+
   const [isPasted, setIsPasted] = useState(false)
   const PASSINGSCORE = 80
   let result = (rightAnswers / numberOfQuestions) * 100
@@ -38,14 +39,15 @@ const Results = ({ rightAnswers = 1, numberOfQuestions = 15 }) => {
       <h2>Quiz Results</h2>
       <p className={css.text}>Thank you for completing this quiz. </p>
       <p className={css.text}>
-        You spent {spendMinutes} minutes taking the test. Here are your results.
+        You spent {Math.floor(quizTime / 60)} minutes {quizTime % 60} seconds taking the test. Here
+        are your results.
       </p>
       <div className={css.resultsInfo}>
         <div className={css.configContainer}>
           <h2 className={css.title}>Quiz configuration:</h2>
           <p className={css.text}>Type: {type}</p>
-          <p className={css.text}>Category: {category}</p>
-          <p className={css.text}>Time: {time}</p>
+          <p className={css.text}>Category: {category.value}</p>
+          <p className={css.text}>Time: {time} minutes</p>
           <p className={css.text}>Difficulty: {difficulty}</p>
         </div>
         <div className={css.grafContainer}>

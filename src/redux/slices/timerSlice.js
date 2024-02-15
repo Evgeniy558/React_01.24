@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = { minutesLeft: 0, secondsLeft: 0, isRunning: false, quizTime: null }
+const initialState = { minutesLeft: 0, secondsLeft: 0, isRunning: false, quizTime: 0 }
 
 const timerSlice = createSlice({
   name: 'timer',
@@ -13,13 +13,15 @@ const timerSlice = createSlice({
       state.isRunning = true
     },
     decrementTime(state) {
+      if (state.isRunning) {
+        state.quizTime++
+      }
       if (state.secondsLeft > 0) {
         state.secondsLeft--
       } else if (state.minutesLeft > 0) {
         state.minutesLeft--
-        state.secondsLeft = 9
+        state.secondsLeft = 59
       } else state.isRunning = false
-      state.quizTime++
     },
     stopTimer(state) {
       state.isRunning = false
