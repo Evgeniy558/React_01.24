@@ -4,36 +4,44 @@ import { useRedirectTo } from '../../hooks/useRedirectTo'
 import { ROUTES } from '../../navigation/routes'
 import { useDispatch, useSelector } from 'react-redux'
 import { decrementTime, stopTimer } from '../../redux/slices/timerSlice'
+import { setStatisticData } from '../../redux/slices/statisticsSlice'
 
 const Timer = () => {
   const interval = useRef(null)
   const redirectToResultsPage = useRedirectTo(ROUTES.results)
   const dispatch = useDispatch()
-  const testIsRunning = useSelector((state) => state.timer.isRunning)
-  const minutes = useSelector((state) => state.timer.minutesLeft)
-  const seconds = useSelector((state) => state.timer.secondsLeft)
+  const { isRunning, minutesLeft, secondsLeft } = useSelector((state) => state.timer)
+  const { amount, category, difficulty, type } = useSelector((state) => state.configuration)
 
   useEffect(() => {
-    if (testIsRunning) {
+    if (isRunning) {
       interval.current = setInterval(() => {
         dispatch(decrementTime())
       }, 1000)
 
       return () => clearInterval(interval.current)
     }
-    if (minutes === 0 && seconds === 0) {
+    if (minutesLeft === 0 && secondsLeft === 0) {
       dispatch(stopTimer())
-      redirectToResultsPage()
+      dispatch(
+        setStatisticData({
+          amount: amount,
+          category: category.value,
+          difficulty: difficulty,
+          type: type
+        })
+      )
     }
-  }, [testIsRunning, minutes, dispatch])
+    redirectToResultsPage()
+  }, [isRunning, minutesLeft, dispatch])
 
   return (
     <>
       <div>
         <p className={css.timer}>
-          Time left: {minutes < 10 ? 0 : null}
-          {minutes}:{seconds < 10 ? 0 : null}
-          {seconds}
+          Time left: {minutesLeft < 10 ? 0 : null}
+          {minutesLeft}:{secondsLeft < 10 ? 0 : null}
+          {secondsLeft}
         </p>
       </div>
     </>

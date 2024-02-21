@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { SvgSelector } from '../../components/SvgSelector/SvgSelector'
 import css from './Results.module.css'
 import Button from '../../components/Button/Button'
@@ -18,14 +17,14 @@ const Results = () => {
   const dispatch = useDispatch()
   const redirectToHomePage = useRedirectTo(ROUTES.home)
   const redirectToQuizPage = useRedirectTo(ROUTES.quiz)
-  const [isPasted, setIsPasted] = useState(false)
+  let testIsPasted
   const PASSINGSCORE = 80
   let result = (rightAnswers / questions.length) * 100
-  useEffect(() => {
-    if (result < PASSINGSCORE) {
-      setIsPasted(false)
-    } else setIsPasted(true)
-  }, [result])
+  if (result < PASSINGSCORE) {
+    testIsPasted = false
+  } else {
+    testIsPasted = true
+  }
 
   const handleRestartQuiz = async () => {
     redirectToQuizPage()
@@ -59,7 +58,7 @@ const Results = () => {
           <p className={css.text}>Difficulty: {difficulty}</p>
         </div>
         <div className={css.grafContainer}>
-          {isPasted ? (
+          {testIsPasted ? (
             <SvgSelector id="like"></SvgSelector>
           ) : (
             <SvgSelector id="dislike"></SvgSelector>

@@ -3,7 +3,7 @@ const initialState = {
   amount: null,
   category: { id: '', value: '' },
   difficulty: '',
-  type: { id: '', value: '' },
+  type: '',
   time: null
 }
 
