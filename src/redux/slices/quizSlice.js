@@ -1,55 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { getQuestions } from '../../services/getQuestions'
 
 const initialState = {
   currentQuestion: 1,
-  rightAnswers: null,
-  wrongAnswers: null,
-  questions: [
-    {
-      type: 'multiple',
-      difficulty: 'easy',
-      category: 'History',
-      question:
-        'Which of the following African countries was most successful in resisting colonization?',
-      correct_answer: 'Ethiopia',
-      incorrect_answers: ['C&ocirc;te d&rsquo;Ivoire', 'Congo', 'Namibia']
-    },
-    {
-      type: 'multiple',
-      difficulty: 'easy',
-      category: 'History',
-      question: 'How many manned moon landings have there been?',
-      correct_answer: '6',
-      incorrect_answers: ['1', '3', '7']
-    },
-    {
-      type: 'boolean',
-      difficulty: 'easy',
-      category: 'History',
-      question: 'The United States was a member of the League of Nations.',
-      correct_answer: 'False',
-      incorrect_answers: ['True']
-    },
-
-    {
-      type: 'multiple',
-      difficulty: 'easy',
-      category: 'History',
-      question:
-        'Which of the following African countries was most successful in resisting colonization?',
-      correct_answer: 'Ethiopia',
-      incorrect_answers: ['C&ocirc;te d&rsquo;Ivoire', 'Congo', 'Namibia']
-    },
-    {
-      type: 'boolean',
-      difficulty: 'medium',
-      category: 'Science: Computers',
-      question:
-        'All program codes have to be compiled into an executable file in order to be run. This file can then be executed on any machine.',
-      correct_answer: 'False',
-      incorrect_answers: ['True']
-    }
-  ]
+  rightAnswers: 0,
+  wrongAnswers: 0,
+  questions: [],
+  questionStatus: { isLoarding: false, error: null }
 }
 
 const quizSlice = createSlice({
@@ -59,15 +16,35 @@ const quizSlice = createSlice({
     showNextQuestion(state) {
       state.currentQuestion++
     },
-    countAnsswers(state, payload) {
-      if (payload === true) {
+    countAnswers(state, action) {
+      if (action.payload === true) {
         state.rightAnswers++
       } else {
         state.wrongAnswers++
       }
+    },
+    restartQuiz(state) {
+      state.currentQuestion = initialState.currentQuestion
+      state.rightAnswers = initialState.rightAnswers
+      state.wrongAnswers = initialState.wrongAnswers
+      state.questions = initialState.questions
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getQuestions.pending, (state) => {
+        state.questionStatus.isLoarding = true
+      })
+      .addCase(getQuestions.fulfilled, (state, action) => {
+        state.questionStatus.isLoarding = false
+        state.questions = action.payload
+      })
+      .addCase(getQuestions.rejected, (state, action) => {
+        state.questionStatus.isLoarding = false
+        state.questionStatus.error = action.payload
+      })
   }
 })
 
-export const { showNextQuestion, countAnsswers } = quizSlice.actions
+export const { showNextQuestion, countAnswers, restartQuiz } = quizSlice.actions
 export const quizReducer = quizSlice.reducer

@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   amount: null,
-  category: { id: null, value: '' },
+  category: { id: '', value: '' },
   difficulty: '',
-  type: { id: null, value: '' },
+  type: { id: '', value: '' },
   time: null
 }
 

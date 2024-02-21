@@ -4,33 +4,45 @@ import css from './Results.module.css'
 import Button from '../../components/Button/Button'
 import { useRedirectTo } from '../../hooks/useRedirectTo'
 import { ROUTES } from '../../navigation/routes'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { restartQuiz } from '../../redux/slices/quizSlice'
+import { resetTimer, startTimer } from '../../redux/slices/timerSlice'
+import { getQuestions } from '../../services/getQuestions'
+import { createQuizUrl } from '../../services/createQuizUrl'
 
-const Results = ({ rightAnswers = 1 }) => {
-  const type = useSelector((state) => state.configuration.type)
-  const difficulty = useSelector((state) => state.configuration.difficulty)
-  const category = useSelector((state) => state.configuration.category)
-  const time = useSelector((state) => state.configuration.time)
-  const numberOfQuestions = useSelector((state) => state.quiz.questions.length)
+const Results = () => {
+  const { amount, type, difficulty, category, time } = useSelector((state) => state.configuration)
+
+  const { questions, rightAnswers } = useSelector((state) => state.quiz)
+  // const numberOfQuestions = useSelector((state) => state.quiz.questions.length)
+
   const quizTime = useSelector((state) => state.timer.quizTime)
 
+  const dispatch = useDispatch()
   const redirectToHomePage = useRedirectTo(ROUTES.home)
   const redirectToQuizPage = useRedirectTo(ROUTES.quiz)
 
   const [isPasted, setIsPasted] = useState(false)
   const PASSINGSCORE = 80
-  let result = (rightAnswers / numberOfQuestions) * 100
+  let result = (rightAnswers / questions.length) * 100
   useEffect(() => {
     if (result < PASSINGSCORE) {
       setIsPasted(false)
     } else setIsPasted(true)
   }, [result])
 
-  const handleRestartQuiz = () => {
+  const handleRestartQuiz = async () => {
     redirectToQuizPage()
-    console.log('get data quiz from server')
+    dispatch(restartQuiz())
+    const quizUrl = createQuizUrl(amount, category.id, difficulty, type)
+    await dispatch(getQuestions(quizUrl))
+    dispatch(resetTimer())
+    dispatch(startTimer())
   }
   const handleAnotherQuiz = () => {
+    dispatch(restartQuiz())
+    dispatch(resetTimer())
+    dispatch(startTimer())
     redirectToHomePage()
   }
 
@@ -64,7 +76,7 @@ const Results = ({ rightAnswers = 1 }) => {
               <span className={css.resultLabel}>Correct answers</span>
             </div>
             <div className={css.resultItem}>
-              <span className={css.resultValue}>{numberOfQuestions}</span>
+              <span className={css.resultValue}>{questions.length}</span>
               <span className={css.resultLabel}>Questions</span>
             </div>
             <div className={css.resultItem}>

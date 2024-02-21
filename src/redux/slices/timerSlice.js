@@ -1,13 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = { minutesLeft: 0, secondsLeft: 0, isRunning: false, quizTime: 0 }
+const initialState = {
+  congfigTime: 0,
+  minutesLeft: 0,
+  secondsLeft: 0,
+  isRunning: false,
+  quizTime: 0
+}
 
 const timerSlice = createSlice({
   name: 'timer',
   initialState,
   reducers: {
     setTimer(state, action) {
-      state.minutesLeft = action.payload
+      state.congfigTime = action.payload
+      state.minutesLeft = state.congfigTime
     },
     startTimer(state) {
       state.isRunning = true
@@ -27,13 +34,14 @@ const timerSlice = createSlice({
       state.isRunning = false
     },
     resetTimer(state) {
-      state.minutesLeft = initialState.minutesLeft
+      state.minutesLeft = state.congfigTime
       state.secondsLeft = initialState.secondsLeft
-      state.isRunning = initialState.isRunning
+      state.isRunning = false
       state.quizTime = initialState.quizTime
     }
   }
 })
 
-export const { setTimer, decrementTime, startTimer, stopTimer, resetTimer } = timerSlice.actions
+export const { congfigTime, setTimer, decrementTime, startTimer, stopTimer, resetTimer, quizTime } =
+  timerSlice.actions
 export const timerReducer = timerSlice.reducer

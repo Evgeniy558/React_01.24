@@ -25,7 +25,7 @@ const Timer = () => {
       dispatch(stopTimer())
       redirectToResultsPage()
     }
-  }, [testIsRunning, dispatch])
+  }, [testIsRunning, minutes, dispatch])
 
   return (
     <>

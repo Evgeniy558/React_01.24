@@ -7,7 +7,7 @@ import { ROUTES } from '../../navigation/routes'
 import { useRedirectTo } from '../../hooks/useRedirectTo'
 import ModalWindow from '../../components/ModalWindow/ModalWindow'
 import { useDispatch, useSelector } from 'react-redux'
-import { showNextQuestion } from '../../redux/slices/quizSlice'
+import { countAnswers, showNextQuestion } from '../../redux/slices/quizSlice'
 import { stopTimer } from '../../redux/slices/timerSlice'
 
 export const ModalWindowContext = createContext()
@@ -15,21 +15,18 @@ const Quiz = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const redirectToResults = useRedirectTo(ROUTES.results)
   const dispatch = useDispatch()
-  const testStoreQuiz = useSelector((state) => state.configuration.amount)
-  const currentQuestion = useSelector((state) => state.quiz.currentQuestion)
+  const { currentQuestion, questions, questionStatus } = useSelector((state) => state.quiz)
   const numberOfQuestions = useSelector((state) => state.quiz.questions.length)
-  const questions = useSelector((state) => state.quiz.questions)
-
-  console.log('testStoreQuiz', testStoreQuiz)
 
   useEffect(() => {
-    if (currentQuestion > numberOfQuestions) {
+    if (currentQuestion > numberOfQuestions && !questionStatus.isLoarding) {
       dispatch(stopTimer())
       redirectToResults()
     }
   }, [currentQuestion, numberOfQuestions])
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (e) => {
+    dispatch(countAnswers(e.target.value === 'true'))
     dispatch(showNextQuestion())
   }
 
@@ -46,47 +43,55 @@ const Quiz = () => {
           </div>
         </ModalWindowContext.Provider>
       ) : null}
-
-      <section className={css.quizContainer}>
-        <h2>Quiz page</h2>
-        <div className={css.questionContainer}>
-          {currentQuestion <= numberOfQuestions && questions[currentQuestion - 1].question}
-        </div>
-        <div className={css.time}>
-          <Timer></Timer>
-        </div>
-        <div>
-          <div
-            className={css.buttonsContainer}
-            style={
-              currentQuestion <= numberOfQuestions &&
-              questions[currentQuestion - 1].type !== 'multiple'
-                ? { gridTemplateRows: 'repeat(1, 1fr)' }
-                : {}
-            }>
-            {
-              <>
-                {currentQuestion <= numberOfQuestions &&
-                  questions[currentQuestion - 1].incorrect_answers.map((el, index) => (
-                    <Button key={index} textButton={el} onClick={handleButtonClick}></Button>
-                  ))}
-                <Button
-                  textButton={
-                    currentQuestion <= numberOfQuestions &&
-                    questions[currentQuestion - 1].correct_answer
-                  }
-                  onClick={handleButtonClick}></Button>
-              </>
-            }
+      {!questionStatus.isLoarding ? (
+        <section className={css.quizContainer}>
+          <h2>Quiz page</h2>
+          <div className={css.questionContainer}>
+            {currentQuestion <= numberOfQuestions && questions[currentQuestion - 1].question}
           </div>
-          <ProgressBar
-            numberOfCurrentQuestion={currentQuestion}
-            numberOfQuestions={numberOfQuestions}
-          />
-        </div>
+          <div className={css.time}>
+            <Timer></Timer>
+          </div>
+          <div>
+            <div
+              className={css.buttonsContainer}
+              style={
+                currentQuestion <= numberOfQuestions &&
+                questions[currentQuestion - 1].type !== 'multiple'
+                  ? { gridTemplateRows: 'repeat(1, 1fr)' }
+                  : {}
+              }>
+              {
+                <>
+                  {currentQuestion <= numberOfQuestions &&
+                    questions[currentQuestion - 1].incorrect_answers.map((el, index) => (
+                      <Button
+                        key={index}
+                        textButton={el}
+                        onClick={handleButtonClick}
+                        value={false}></Button>
+                    ))}
+                  <Button
+                    textButton={
+                      currentQuestion <= numberOfQuestions &&
+                      questions[currentQuestion - 1].correct_answer
+                    }
+                    onClick={handleButtonClick}
+                    value={true}></Button>
+                </>
+              }
+            </div>
+            <ProgressBar
+              numberOfCurrentQuestion={currentQuestion}
+              numberOfQuestions={numberOfQuestions}
+            />
+          </div>
 
-        <Button textButton={'End quiz'} onClick={handleEndQuiz} hoverColor="red"></Button>
-      </section>
+          <Button textButton={'End quiz'} onClick={handleEndQuiz} hoverColor="red"></Button>
+        </section>
+      ) : (
+        <p>Loarding...</p>
+      )}
     </>
   )
 }

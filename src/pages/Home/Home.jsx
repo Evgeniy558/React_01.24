@@ -17,11 +17,15 @@ import {
   setType,
   setTime
 } from '../../redux/slices/configurationsSlice'
-import { setTimer, startTimer } from '../../redux/slices/timerSlice'
+import { resetTimer, setTimer, startTimer } from '../../redux/slices/timerSlice'
+import { getQuestions } from '../../services/getQuestions'
+import { restartQuiz } from '../../redux/slices/quizSlice'
+import { createQuizUrl } from '../../services/createQuizUrl'
 
 const Home = () => {
   const redirectToStatisticsPage = useRedirectTo(ROUTES.statistics)
   const redirectToQuizPage = useRedirectTo(ROUTES.quiz)
+
   const [categories, setCategories] = useState([])
   const amountRef = useRef()
   const categoryRef = useRef()
@@ -43,15 +47,25 @@ const Home = () => {
     }
   }, [])
 
-  const handleStart = () => {
-    dispatch(setAmount(amountRef.current.value))
-    dispatch(setCategory(categoryRef.current.getValue()))
-    dispatch(setDifficulty(difficultyRef.current.getValue()))
-    dispatch(setType(typeRef.current.getValue()))
-    dispatch(setTime(timeRef.current.getValue()))
+  const handleStart = async () => {
+    const amountValue = amountRef.current.value
+    const categoryValue = categoryRef.current.getValue()
+    const difficultyValue = difficultyRef.current.getValue()
+    const typeValue = typeRef.current.getValue()
+    const timeValue = timeRef.current.getValue()
+    dispatch(setAmount(amountValue))
+    dispatch(setCategory(categoryValue))
+    dispatch(setDifficulty(difficultyValue))
+    dispatch(setType(typeValue))
+    dispatch(setTime(timeValue))
     dispatch(setTimer(timeRef.current.getValue()))
+    dispatch(restartQuiz())
+    const quizUrl = createQuizUrl(amountValue, categoryValue.id, difficultyValue, typeValue)
+    await dispatch(getQuestions(quizUrl))
+    dispatch(resetTimer())
     dispatch(startTimer())
-    getToken(), redirectToQuizPage()
+    redirectToQuizPage()
+    getToken()
   }
 
   return (

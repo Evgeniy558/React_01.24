@@ -6,11 +6,11 @@ const SelectInput = forwardRef(function SelectorInput({ inputText, name, data, b
   useImperativeHandle(ref, () => ({
     getValue: () => {
       const selectedOption = selectRef.current[selectRef.current.selectedIndex]
-      console.log('selectedOption', selectedOption.value)
       return behavior === 'id'
-        ? selectedOption.value
-          ? { id: selectedOption.getAttribute('id'), value: selectedOption.value }
-          : `${name} not chosen`
+        ? {
+            id: selectedOption.getAttribute('id'),
+            value: selectedOption.value ? selectedOption.value : `${name} not chosen`
+          }
         : selectedOption.value
           ? selectedOption.value
           : `${name} not chosen`
