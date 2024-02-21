@@ -14,14 +14,10 @@ const Results = () => {
   const { amount, type, difficulty, category, time } = useSelector((state) => state.configuration)
 
   const { questions, rightAnswers } = useSelector((state) => state.quiz)
-  // const numberOfQuestions = useSelector((state) => state.quiz.questions.length)
-
   const quizTime = useSelector((state) => state.timer.quizTime)
-
   const dispatch = useDispatch()
   const redirectToHomePage = useRedirectTo(ROUTES.home)
   const redirectToQuizPage = useRedirectTo(ROUTES.quiz)
-
   const [isPasted, setIsPasted] = useState(false)
   const PASSINGSCORE = 80
   let result = (rightAnswers / questions.length) * 100
