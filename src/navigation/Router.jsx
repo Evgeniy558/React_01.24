@@ -3,7 +3,7 @@ import Home from '../pages/Home/Home'
 import Quiz from '../pages/Quiz/Quiz'
 import Results from '../pages/Results/Results'
 import Statistics from '../pages/Statistics/Statistics'
-import { ROUTES } from './ROUTES'
+import { ROUTES } from './routes'
 
 const router = createBrowserRouter([
   {

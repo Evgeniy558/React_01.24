@@ -7,6 +7,7 @@ import { ModalWindowContext } from '../../pages/Quiz'
 
 const ModalWindow = () => {
   const redirectToHome = useRedirectTo(ROUTES.home)
+
   const { modalIsOpen, setModalIsOpen } = useContext(ModalWindowContext)
   useEffect(() => {
     const handleEsc = (e) => {
@@ -25,7 +26,8 @@ const ModalWindow = () => {
       className={css.background}
       onClick={() => {
         setModalIsOpen(!modalIsOpen)
-      }}>
+      }}
+    >
       <div className={css.modalWindow}>
         <h3>Do you want to end the quiz?</h3>
         <div className={css.buttonContainer}>
@@ -34,7 +36,8 @@ const ModalWindow = () => {
             textButton={'Cancel'}
             onClick={() => {
               setModalIsOpen(!modalIsOpen)
-            }}></Button>
+            }}
+          ></Button>
         </div>
       </div>
     </div>

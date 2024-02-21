@@ -1,10 +1,12 @@
+import { forwardRef } from 'react'
 import css from './Input.module.css'
-const Input = ({ inputText, name }) => {
+const Input = forwardRef(function Input({ inputText }, ref) {
   return (
     <div className={css.inputContainer}>
       <label htmlFor={name} className={css.lable}>
         {inputText}
         <input
+          ref={ref}
           type="text"
           id={name}
           name={name}
@@ -16,5 +18,5 @@ const Input = ({ inputText, name }) => {
       </label>
     </div>
   )
-}
+})
 export default Input

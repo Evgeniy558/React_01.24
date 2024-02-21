@@ -4,31 +4,41 @@ import css from './Results.module.css'
 import Button from '../../components/Button/Button'
 import { useRedirectTo } from '../../hooks/useRedirectTo'
 import { ROUTES } from '../../navigation/routes'
-const Results = ({
-  type = 'type',
-  category = 'category',
-  time = 'time',
-  difficulty = 'difficulty',
-  timeSpent = '2:10',
-  rightAnswers = 1,
-  numberOfQuestions = 15
-}) => {
+import { useDispatch, useSelector } from 'react-redux'
+import { restartQuiz } from '../../redux/slices/quizSlice'
+import { resetTimer, startTimer } from '../../redux/slices/timerSlice'
+import { getQuestions } from '../../services/getQuestions'
+import { createQuizUrl } from '../../services/createQuizUrl'
+
+const Results = () => {
+  const { amount, type, difficulty, category, time } = useSelector((state) => state.configuration)
+
+  const { questions, rightAnswers } = useSelector((state) => state.quiz)
+  const quizTime = useSelector((state) => state.timer.quizTime)
+  const dispatch = useDispatch()
   const redirectToHomePage = useRedirectTo(ROUTES.home)
   const redirectToQuizPage = useRedirectTo(ROUTES.quiz)
   const [isPasted, setIsPasted] = useState(false)
   const PASSINGSCORE = 80
-  let result = (rightAnswers / numberOfQuestions) * 100
+  let result = (rightAnswers / questions.length) * 100
   useEffect(() => {
     if (result < PASSINGSCORE) {
       setIsPasted(false)
     } else setIsPasted(true)
   }, [result])
 
-  const handleRestartQuiz = () => {
+  const handleRestartQuiz = async () => {
     redirectToQuizPage()
-    console.log('get data quiz from server')
+    dispatch(restartQuiz())
+    const quizUrl = createQuizUrl(amount, category.id, difficulty, type)
+    await dispatch(getQuestions(quizUrl))
+    dispatch(resetTimer())
+    dispatch(startTimer())
   }
   const handleAnotherQuiz = () => {
+    dispatch(restartQuiz())
+    dispatch(resetTimer())
+    dispatch(startTimer())
     redirectToHomePage()
   }
 
@@ -37,14 +47,15 @@ const Results = ({
       <h2>Quiz Results</h2>
       <p className={css.text}>Thank you for completing this quiz. </p>
       <p className={css.text}>
-        You spent {timeSpent} minutes taking the test. Here are your results.
+        You spent {Math.floor(quizTime / 60)} minutes {quizTime % 60} seconds taking the test. Here
+        are your results.
       </p>
       <div className={css.resultsInfo}>
         <div className={css.configContainer}>
           <h2 className={css.title}>Quiz configuration:</h2>
           <p className={css.text}>Type: {type}</p>
-          <p className={css.text}>Category: {category}</p>
-          <p className={css.text}>Time: {time}</p>
+          <p className={css.text}>Category: {category.value}</p>
+          <p className={css.text}>Time: {time} minutes</p>
           <p className={css.text}>Difficulty: {difficulty}</p>
         </div>
         <div className={css.grafContainer}>
@@ -61,7 +72,7 @@ const Results = ({
               <span className={css.resultLabel}>Correct answers</span>
             </div>
             <div className={css.resultItem}>
-              <span className={css.resultValue}>{numberOfQuestions}</span>
+              <span className={css.resultValue}>{questions.length}</span>
               <span className={css.resultLabel}>Questions</span>
             </div>
             <div className={css.resultItem}>

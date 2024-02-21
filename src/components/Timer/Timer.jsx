@@ -1,33 +1,31 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import css from './Timer.module.css'
-import Button from '../Button/Button'
 import { useRedirectTo } from '../../hooks/useRedirectTo'
 import { ROUTES } from '../../navigation/routes'
+import { useDispatch, useSelector } from 'react-redux'
+import { decrementTime, stopTimer } from '../../redux/slices/timerSlice'
 
-const Timer = ({ time }) => {
-  const [minutes, setMinutes] = useState(time)
-  const [seconds, setSeconds] = useState(0)
-  const [isRunning, setIsRunning] = useState(false)
+const Timer = () => {
   const interval = useRef(null)
   const redirectToResultsPage = useRedirectTo(ROUTES.results)
+  const dispatch = useDispatch()
+  const testIsRunning = useSelector((state) => state.timer.isRunning)
+  const minutes = useSelector((state) => state.timer.minutesLeft)
+  const seconds = useSelector((state) => state.timer.secondsLeft)
 
   useEffect(() => {
-    if (isRunning) {
+    if (testIsRunning) {
       interval.current = setInterval(() => {
-        if (seconds > 0) {
-          setSeconds(seconds - 1)
-        } else if (minutes > 0) {
-          setMinutes(minutes - 1)
-          setSeconds(9)
-        } else redirectToResultsPage()
+        dispatch(decrementTime())
       }, 1000)
+
       return () => clearInterval(interval.current)
     }
-  }, [minutes, seconds, isRunning])
-
-  const handleClick = () => {
-    setIsRunning(true)
-  }
+    if (minutes === 0 && seconds === 0) {
+      dispatch(stopTimer())
+      redirectToResultsPage()
+    }
+  }, [testIsRunning, minutes, dispatch])
 
   return (
     <>
@@ -38,7 +36,6 @@ const Timer = ({ time }) => {
           {seconds}
         </p>
       </div>
-      <Button textButton={'Start test'} onClick={handleClick}></Button>
     </>
   )
 }
