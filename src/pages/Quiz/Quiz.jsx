@@ -9,19 +9,29 @@ import ModalWindow from '../../components/ModalWindow/ModalWindow'
 import { useDispatch, useSelector } from 'react-redux'
 import { countAnswers, showNextQuestion } from '../../redux/slices/quizSlice'
 import { stopTimer } from '../../redux/slices/timerSlice'
+import { setStatisticData } from '../../redux/slices/statisticsSlice'
 
 export const ModalWindowContext = createContext()
 const Quiz = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
-  const redirectToResults = useRedirectTo(ROUTES.results)
+  const redirectToResultsPage = useRedirectTo(ROUTES.results)
   const dispatch = useDispatch()
+  const { amount, category, difficulty, type } = useSelector((state) => state.configuration)
   const { currentQuestion, questions, questionStatus } = useSelector((state) => state.quiz)
   const numberOfQuestions = useSelector((state) => state.quiz.questions.length)
 
   useEffect(() => {
     if (currentQuestion > numberOfQuestions && !questionStatus.isLoarding) {
       dispatch(stopTimer())
-      redirectToResults()
+      dispatch(
+        setStatisticData({
+          amount: amount,
+          category: category.value,
+          difficulty: difficulty,
+          type: type
+        })
+      )
+      redirectToResultsPage()
     }
   }, [currentQuestion, numberOfQuestions])
 

@@ -4,15 +4,18 @@ import Container from './components/Container/Container'
 
 import router from './navigation/Router'
 import { Provider } from 'react-redux'
-import { store } from './redux/store'
+import { persistor, store } from './redux/store'
+import { PersistGate } from 'redux-persist/integration/react'
 
 function App() {
   return (
     <>
       <Provider store={store}>
-        <Container>
-          <RouterProvider router={router}></RouterProvider>
-        </Container>
+        <PersistGate loading={null} persistor={persistor}>
+          <Container>
+            <RouterProvider router={router}></RouterProvider>
+          </Container>
+        </PersistGate>
       </Provider>
     </>
   )
