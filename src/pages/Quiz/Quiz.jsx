@@ -22,6 +22,14 @@ const Quiz = () => {
 
   useEffect(() => {
     if (currentQuestion > numberOfQuestions && !questionStatus.isLoarding) {
+      console.log(
+        'currentQuestion',
+        currentQuestion,
+        'numberOfQuestions',
+        numberOfQuestions,
+        'questionStatus',
+        !questionStatus.isLoarding
+      )
       dispatch(stopTimer())
       dispatch(
         setStatisticData({
