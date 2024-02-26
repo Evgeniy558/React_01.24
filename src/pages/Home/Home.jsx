@@ -9,7 +9,7 @@ import getCategories from '../../services/getCategories'
 import { DIFFICULTY, TIME, TYPE } from '../../components/SelectInput/SelectInput.constants'
 import { ROUTES } from '../../navigation/routes'
 import { useRedirectTo } from '../../hooks/useRedirectTo'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   setAmount,
   setCategory,
@@ -17,15 +17,13 @@ import {
   setType,
   setTime
 } from '../../redux/slices/configurationsSlice'
-import { resetTimer, setTimer, startTimer } from '../../redux/slices/timerSlice'
-import { getQuestions } from '../../services/getQuestions'
-import { restartQuiz } from '../../redux/slices/quizSlice'
-import { createQuizUrl } from '../../services/createQuizUrl'
+import { setTimer } from '../../redux/slices/timerSlice'
+import { setQuizIsRun } from '../../redux/slices/quizSlice'
+import { useStartQuiz } from '../../hooks/startQuiz'
 
 const Home = () => {
   const redirectToStatisticsPage = useRedirectTo(ROUTES.statistics)
-  const redirectToQuizPage = useRedirectTo(ROUTES.quiz)
-
+  const starQuiz = useStartQuiz()
   const [categories, setCategories] = useState([])
   const amountRef = useRef()
   const categoryRef = useRef()
@@ -33,6 +31,28 @@ const Home = () => {
   const typeRef = useRef()
   const timeRef = useRef()
   const dispatch = useDispatch()
+  const quizIsRunning = useSelector((state) => state.quiz.quizIsRunning)
+
+  const handleStart = () => {
+    const amountValue = amountRef.current.value
+    const categoryValue = categoryRef.current.getValue()
+    const difficultyValue = difficultyRef.current.getValue()
+    const typeValue = typeRef.current.getValue()
+    const timeValue = timeRef.current.getValue()
+    dispatch(setAmount(amountValue))
+    dispatch(setCategory(categoryValue))
+    dispatch(setDifficulty(difficultyValue))
+    dispatch(setType(typeValue))
+    dispatch(setTime(timeValue))
+    dispatch(setTimer(timeRef.current.getValue()))
+    dispatch(setQuizIsRun())
+    getToken()
+  }
+  useEffect(() => {
+    if (quizIsRunning) {
+      starQuiz()
+    }
+  }, [quizIsRunning])
 
   useEffect(() => {
     let ignore = false
@@ -46,28 +66,6 @@ const Home = () => {
       ignore = true
     }
   }, [])
-
-  const handleStart = async () => {
-    const amountValue = amountRef.current.value
-    const categoryValue = categoryRef.current.getValue()
-    const difficultyValue = difficultyRef.current.getValue()
-    const typeValue = typeRef.current.getValue()
-    const timeValue = timeRef.current.getValue()
-    dispatch(setAmount(amountValue))
-    dispatch(setCategory(categoryValue))
-    dispatch(setDifficulty(difficultyValue))
-    dispatch(setType(typeValue))
-    dispatch(setTime(timeValue))
-    dispatch(setTimer(timeRef.current.getValue()))
-    dispatch(restartQuiz())
-    const quizUrl = createQuizUrl(amountValue, categoryValue.id, difficultyValue, typeValue)
-    await dispatch(getQuestions(quizUrl))
-    dispatch(resetTimer())
-    dispatch(startTimer())
-    redirectToQuizPage()
-    getToken()
-  }
-
   return (
     <>
       <section>
