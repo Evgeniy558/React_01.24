@@ -17,7 +17,6 @@ import {
   setType,
   setTime
 } from '../../redux/slices/configurationsSlice'
-import { setTimer } from '../../redux/slices/timerSlice'
 import { setQuizIsRun } from '../../redux/slices/quizSlice'
 import { useStartQuiz } from '../../hooks/startQuiz'
 
@@ -39,12 +38,21 @@ const Home = () => {
     const difficultyValue = difficultyRef.current.getValue()
     const typeValue = typeRef.current.getValue()
     const timeValue = timeRef.current.getValue()
-    dispatch(setAmount(amountValue))
+
+    if (!amountValue) {
+      dispatch(setAmount('5'))
+    } else {
+      dispatch(setAmount(amountValue))
+    }
     dispatch(setCategory(categoryValue))
     dispatch(setDifficulty(difficultyValue))
     dispatch(setType(typeValue))
-    dispatch(setTime(timeValue))
-    dispatch(setTimer(timeRef.current.getValue()))
+    if (timeValue === 'time not chosen') {
+      dispatch(setTime('1'))
+    } else {
+      dispatch(setTime(timeValue))
+    }
+
     dispatch(setQuizIsRun())
     getToken()
   }

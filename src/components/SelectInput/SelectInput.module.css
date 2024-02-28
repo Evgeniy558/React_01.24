@@ -21,3 +21,6 @@
 .option {
   border-radius: 0.3rem;
 }
+.error {
+  color: rgba(255, 2, 2);
+}

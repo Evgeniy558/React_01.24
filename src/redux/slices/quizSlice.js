@@ -33,7 +33,7 @@ const quizSlice = createSlice({
       state.currentQuestion = initialState.currentQuestion
       state.rightAnswers = initialState.rightAnswers
       state.wrongAnswers = initialState.wrongAnswers
-      state.quizIsRunning = initialState.quizIsRunning
+      // state.quizIsRunning = initialState.quizIsRunning
     }
   },
   extraReducers: (builder) => {

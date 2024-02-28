@@ -21,3 +21,6 @@
 .inputEl::placeholder {
   color: rgb(228, 224, 224);
 }
+.error {
+  color: rgba(255, 2, 2);
+}
