@@ -17,6 +17,15 @@ const combinedReducer = combineReducers({
 const persistConfig = { key: 'root', storage, whitelist: ['statistics'] }
 const persistedReducer = persistReducer(persistConfig, combinedReducer)
 
-export const store = configureStore({ reducer: persistedReducer })
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST'],
+        ignoredPaths: ['register']
+      }
+    })
+})
 
 export const persistor = persistStore(store)

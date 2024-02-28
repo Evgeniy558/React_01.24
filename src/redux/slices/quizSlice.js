@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { getQuestions } from '../../services/getQuestions'
+import { stopTimer } from './timerSlice'
 
 const initialState = {
   currentQuestion: 1,
   rightAnswers: 0,
   wrongAnswers: 0,
+  quizIsRunning: false,
   questions: [],
   questionStatus: { isLoarding: false, error: null }
 }
@@ -23,16 +25,21 @@ const quizSlice = createSlice({
         state.wrongAnswers++
       }
     },
+    setQuizIsRun(state) {
+      state.quizIsRunning = true
+    },
+
     restartQuiz(state) {
       state.currentQuestion = initialState.currentQuestion
       state.rightAnswers = initialState.rightAnswers
       state.wrongAnswers = initialState.wrongAnswers
-      state.questions = initialState.questions
+      // state.quizIsRunning = initialState.quizIsRunning
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(getQuestions.pending, (state) => {
+        state.questions = initialState.questions
         state.questionStatus.isLoarding = true
       })
       .addCase(getQuestions.fulfilled, (state, action) => {
@@ -43,8 +50,11 @@ const quizSlice = createSlice({
         state.questionStatus.isLoarding = false
         state.questionStatus.error = action.payload
       })
+      .addCase(stopTimer, (state) => {
+        state.quizIsRunning = false
+      })
   }
 })
 
-export const { showNextQuestion, countAnswers, restartQuiz } = quizSlice.actions
+export const { showNextQuestion, countAnswers, restartQuiz, setQuizIsRun } = quizSlice.actions
 export const quizReducer = quizSlice.reducer

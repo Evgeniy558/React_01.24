@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { countAnswers, showNextQuestion } from '../../redux/slices/quizSlice'
 import { stopTimer } from '../../redux/slices/timerSlice'
 import { setStatisticData } from '../../redux/slices/statisticsSlice'
+import { prepareAndShuffleAnswers } from '../../services/prepareAndShuffleAnswers'
+import { decode } from 'html-entities'
 
 export const ModalWindowContext = createContext()
 const Quiz = () => {
@@ -57,7 +59,9 @@ const Quiz = () => {
         <section className={css.quizContainer}>
           <h2>Quiz page</h2>
           <div className={css.questionContainer}>
-            {currentQuestion <= numberOfQuestions && questions[currentQuestion - 1].question}
+            {decode(
+              currentQuestion <= numberOfQuestions && questions[currentQuestion - 1].question
+            )}
           </div>
           <div className={css.time}>
             <Timer></Timer>
@@ -71,25 +75,14 @@ const Quiz = () => {
                   ? { gridTemplateRows: 'repeat(1, 1fr)' }
                   : {}
               }>
-              {
-                <>
-                  {currentQuestion <= numberOfQuestions &&
-                    questions[currentQuestion - 1].incorrect_answers.map((el, index) => (
-                      <Button
-                        key={index}
-                        textButton={el}
-                        onClick={handleButtonClick}
-                        value={false}></Button>
-                    ))}
+              {currentQuestion <= numberOfQuestions &&
+                prepareAndShuffleAnswers(questions[currentQuestion - 1]).map((item, index) => (
                   <Button
-                    textButton={
-                      currentQuestion <= numberOfQuestions &&
-                      questions[currentQuestion - 1].correct_answer
-                    }
+                    key={index}
+                    textButton={decode(item.text)}
                     onClick={handleButtonClick}
-                    value={true}></Button>
-                </>
-              }
+                    value={item.isCorrect}></Button>
+                ))}
             </div>
             <ProgressBar
               numberOfCurrentQuestion={currentQuestion}

@@ -6,17 +6,15 @@ import { ROUTES } from '../../navigation/routes'
 import { useDispatch, useSelector } from 'react-redux'
 import { restartQuiz } from '../../redux/slices/quizSlice'
 import { resetTimer, startTimer } from '../../redux/slices/timerSlice'
-import { getQuestions } from '../../services/getQuestions'
-import { createQuizUrl } from '../../services/createQuizUrl'
+import { useStartQuiz } from '../../hooks/startQuiz'
 
 const Results = () => {
-  const { amount, type, difficulty, category, time } = useSelector((state) => state.configuration)
-
+  const { type, difficulty, category, time } = useSelector((state) => state.configuration)
   const { questions, rightAnswers } = useSelector((state) => state.quiz)
   const quizTime = useSelector((state) => state.timer.quizTime)
   const dispatch = useDispatch()
   const redirectToHomePage = useRedirectTo(ROUTES.home)
-  const redirectToQuizPage = useRedirectTo(ROUTES.quiz)
+  const starQuiz = useStartQuiz()
   let testIsPasted
   const PASSINGSCORE = 80
   let result = (rightAnswers / questions.length) * 100
@@ -26,13 +24,8 @@ const Results = () => {
     testIsPasted = true
   }
 
-  const handleRestartQuiz = async () => {
-    redirectToQuizPage()
-    dispatch(restartQuiz())
-    const quizUrl = createQuizUrl(amount, category.id, difficulty, type)
-    await dispatch(getQuestions(quizUrl))
-    dispatch(resetTimer())
-    dispatch(startTimer())
+  const handleRestartQuiz = () => {
+    starQuiz()
   }
   const handleAnotherQuiz = () => {
     dispatch(restartQuiz())
