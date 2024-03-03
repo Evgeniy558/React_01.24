@@ -24,7 +24,8 @@ const Input = forwardRef(function Input({ inputText }, ref) {
           min={5}
           max={15}
           placeholder="Min 5 max 15"
-          onChange={chandleChange}></input>
+          onChange={chandleChange}
+        ></input>
       </label>
       {error && <div className={css.error}>{error}</div>}
     </div>
