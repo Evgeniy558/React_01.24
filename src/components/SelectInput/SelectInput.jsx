@@ -39,7 +39,8 @@ const SelectInput = forwardRef(function SelectorInput({ inputText, name, data, b
         className={css.selectEl}
         defaultValue=""
         ref={selectRef}
-        onClick={handleChange}>
+        onClick={handleChange}
+      >
         <option value="" disabled>
           - Select {name} -
         </option>
