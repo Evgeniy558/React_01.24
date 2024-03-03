@@ -18,6 +18,3 @@ const Button = ({ textButton, onClick, hoverColor = 'green', value = false }) =>
   )
 }
 export default Button
-// className="box"
-// whileHover={{ scale: 1.1 }}
-// transition={{ type: "spring", stiffness: 400, damping: 10 }}
