@@ -6,7 +6,7 @@ const shuffleArray = (array) => {
   return array
 }
 
-export const prepareAndShuffleAnswers = (question) => {
+export const prepareAndShuffleAnswers = (question: []) => {
   if (!question) return []
   const allAnswers = [
     ...question.incorrect_answers.map((answer) => {

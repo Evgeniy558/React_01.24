@@ -4,7 +4,7 @@ import css from './SelectInput.module.css'
 interface QuizQuestion {
   id: string
   name: string
-  category: string
+  category?: string
   value: string | number
 }
 
@@ -15,7 +15,7 @@ interface SelectorInputProps {
   behavior: 'id' | 'value'
 }
 
-interface SelectInputRef {
+export interface SelectInputRef {
   getValue: () => any
 }
 

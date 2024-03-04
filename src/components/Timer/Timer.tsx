@@ -7,12 +7,6 @@ import { decrementTime, stopTimer } from '../../redux/slices/timerSlice'
 import { setStatisticData } from '../../redux/slices/statisticsSlice'
 import { RootState } from '../../redux/store'
 
-interface configurationType {
-  amount: string
-  difficulty: string
-  type: string
-}
-
 const Timer = () => {
   const interval = useRef<number | null>(null)
   const redirectToResultsPage = useRedirectTo(ROUTES.results)

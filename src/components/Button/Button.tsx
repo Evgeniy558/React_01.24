@@ -3,7 +3,7 @@ import css from './Button.module.css'
 
 interface ButtonProps {
   textButton: string
-  onClick: () => void
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
   hoverColor?: 'green' | 'red'
   value?: string
 }

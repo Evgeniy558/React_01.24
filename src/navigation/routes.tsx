@@ -1,6 +1,6 @@
-export const ROUTES = {
-  home: '/',
-  quiz: '/quiz',
-  results: '/results',
-  statistics: '/statistics'
+export enum ROUTES {
+  home = '/',
+  quiz = '/quiz',
+  results = '/results',
+  statistics = '/statistics'
 }

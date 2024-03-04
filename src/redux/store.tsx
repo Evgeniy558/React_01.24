@@ -6,6 +6,7 @@ import { statisticsReducer } from './slices/statisticsSlice'
 import persistReducer from 'redux-persist/es/persistReducer'
 import persistStore from 'redux-persist/es/persistStore'
 import storage from 'redux-persist/lib/storage'
+import { useDispatch } from 'react-redux'
 
 const combinedReducer = combineReducers({
   configuration: configurationsReducer,
@@ -29,4 +30,7 @@ export const store = configureStore({
 })
 
 export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
+export const useAppDispatch: () => AppDispatch = useDispatch
+
 export const persistor = persistStore(store)
