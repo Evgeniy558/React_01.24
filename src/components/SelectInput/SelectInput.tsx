@@ -1,14 +1,44 @@
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import css from './SelectInput.module.css'
-const SelectInput = forwardRef(function SelectorInput({ inputText, name, data, behavior }, ref) {
-  const selectRef = useRef(null)
+
+interface QuizQuestion {
+  type: string
+  difficulty: string
+  category: string
+  question: string
+  correct_answer: string
+  incorrect_answers: string[]
+}
+
+interface SelectorInputProps {
+  inputText: string
+  name: string
+  data: QuizQuestion[]
+  behavior: 'id' | 'value'
+}
+
+interface SelectInputRef {
+  getValue: () => any
+}
+
+const SelectInput = forwardRef<SelectInputRef, SelectorInputProps>(function SelectorInput(
+  { inputText, name, data, behavior },
+  ref
+) {
+  const selectRef = useRef<HTMLSelectElement | null>(null)
   const [error, setError] = useState('')
 
   useImperativeHandle(ref, () => ({
     getValue: () => {
-      const selectedOption = selectRef.current[selectRef.current.selectedIndex]
+      if (!selectRef.current) {
+        console.error('Select element is not mounted')
+        return { value: `${name} not chosen` }
+      }
+      const selectedOption = selectRef.current[selectRef.current.selectedIndex] as HTMLOptionElement
+
       if (!selectedOption) {
         setError(`Please select a ${name}.`)
+        return { value: `${name} not chosen` }
       }
       setError('')
       return behavior === 'id'

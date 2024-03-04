@@ -1,1 +1,1 @@
-export * from './ProgressBar.jsx'
+export * from './ProgressBar.tsx'

@@ -1,5 +1,11 @@
+import { FC } from 'react'
 import css from './ProgressBar.module.css'
-const ProgressBar = ({ numberOfCurrentQuestion, numberOfQuestions }) => {
+
+interface ProgressBarProps {
+  numberOfCurrentQuestion: number
+  numberOfQuestions: number
+}
+const ProgressBar: FC<ProgressBarProps> = ({ numberOfCurrentQuestion, numberOfQuestions }) => {
   const progressPercentage =
     numberOfCurrentQuestion > numberOfQuestions
       ? 1 * 100

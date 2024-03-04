@@ -1,5 +1,14 @@
+import { FC } from 'react'
 import css from './Button.module.css'
-const Button = ({ textButton, onClick, hoverColor = 'green', value = false }) => {
+
+interface ButtonProps {
+  textButton: string
+  onClick: () => void
+  hoverColor?: 'green' | 'red'
+  value?: string
+}
+
+const Button: FC<ButtonProps> = ({ textButton, onClick, hoverColor = 'green', value = '' }) => {
   const hoverClass =
     hoverColor === 'green' ? css.buttonHoverGreen : hoverColor === 'red' ? css.buttonHoverRed : ''
 

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react'
+import { ChangeEvent, createContext, useEffect, useState } from 'react'
 import Button from '../../components/Button/Button'
 import ProgressBar from '../../components/ProgressBar/ProgressBar'
 import css from './Quiz.module.css'
@@ -13,9 +13,15 @@ import { setStatisticData } from '../../redux/slices/statisticsSlice'
 import { prepareAndShuffleAnswers } from '../../services/prepareAndShuffleAnswers'
 import { decode } from 'html-entities'
 
-export const ModalWindowContext = createContext()
+interface ModalWindowContexType {
+  modalIsOpen: boolean
+  setModalIsOpen: (isOpen: boolean) => void
+}
+
+export const ModalWindowContext = createContext<ModalWindowContexType | null>(null)
+console.log('ModalWindowContext', ModalWindowContext)
 const Quiz = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
   const redirectToResultsPage = useRedirectTo(ROUTES.results)
   const dispatch = useDispatch()
   const { amount, category, difficulty, type } = useSelector((state) => state.configuration)

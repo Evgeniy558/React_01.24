@@ -1,2 +1,2 @@
-export * from './SelectInput.jsx'
-export * from './SelectInput.constants.js'
+export * from './SelectInput.tsx'
+export * from './SelectInput.constants.tsx'
