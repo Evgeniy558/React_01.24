@@ -5,9 +5,12 @@ import { getQuestions } from '../services/getQuestions'
 import { resetTimer, startTimer } from '../redux/slices/timerSlice'
 import { useRedirectTo } from './useRedirectTo'
 import { ROUTES } from '../navigation/routes'
+import { RootState } from '../redux/store'
 
 export const useStartQuiz = () => {
-  const { amount, type, difficulty, category } = useSelector((state) => state.configuration)
+  const { amount, type, difficulty, category } = useSelector(
+    (state: RootState) => state.configuration
+  )
   const dispatch = useDispatch()
   const redirectToQuizPage = useRedirectTo(ROUTES.quiz)
   return () => {

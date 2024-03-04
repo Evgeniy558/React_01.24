@@ -19,6 +19,7 @@ import {
 } from '../../redux/slices/configurationsSlice'
 import { setQuizIsRun } from '../../redux/slices/quizSlice'
 import { useStartQuiz } from '../../hooks/startQuiz'
+import { RootState } from '../../redux/store'
 
 const Home = () => {
   const redirectToStatisticsPage = useRedirectTo(ROUTES.statistics)
@@ -30,7 +31,7 @@ const Home = () => {
   const typeRef = useRef()
   const timeRef = useRef()
   const dispatch = useDispatch()
-  const quizIsRunning = useSelector((state) => state.quiz.quizIsRunning)
+  const quizIsRunning = useSelector((state: RootState) => state.quiz.quizIsRunning)
 
   const handleStart = () => {
     const amountValue = amountRef.current.value

@@ -2,12 +2,10 @@ import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import css from './SelectInput.module.css'
 
 interface QuizQuestion {
-  type: string
-  difficulty: string
+  id: string
+  name: string
   category: string
-  question: string
-  correct_answer: string
-  incorrect_answers: string[]
+  value: string | number
 }
 
 interface SelectorInputProps {
@@ -27,7 +25,6 @@ const SelectInput = forwardRef<SelectInputRef, SelectorInputProps>(function Sele
 ) {
   const selectRef = useRef<HTMLSelectElement | null>(null)
   const [error, setError] = useState('')
-
   useImperativeHandle(ref, () => ({
     getValue: () => {
       if (!selectRef.current) {
@@ -52,7 +49,7 @@ const SelectInput = forwardRef<SelectInputRef, SelectorInputProps>(function Sele
     }
   }))
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (!e.target.value) {
       setError(`Please select a ${name}.`)
     } else {
@@ -69,7 +66,7 @@ const SelectInput = forwardRef<SelectInputRef, SelectorInputProps>(function Sele
         className={css.selectEl}
         defaultValue=""
         ref={selectRef}
-        onClick={handleChange}>
+        onChange={handleChange}>
         <option value="" disabled>
           - Select {name} -
         </option>
