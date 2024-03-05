@@ -66,7 +66,8 @@ const SelectInput = forwardRef<SelectInputRef, SelectorInputProps>(function Sele
         className={css.selectEl}
         defaultValue=""
         ref={selectRef}
-        onChange={handleChange}>
+        onChange={handleChange}
+      >
         <option value="" disabled>
           - Select {name} -
         </option>

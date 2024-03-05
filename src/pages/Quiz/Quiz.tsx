@@ -90,7 +90,8 @@ const Quiz = () => {
                 questions[currentQuestion - 1].type !== 'multiple'
                   ? { gridTemplateRows: 'repeat(1, 1fr)' }
                   : {}
-              }>
+              }
+            >
               {currentQuestion <= numberOfQuestions &&
                 prepareAndShuffleAnswers(questions[currentQuestion - 1]).map(
                   (item: questionType, index: number) => (
@@ -98,7 +99,8 @@ const Quiz = () => {
                       key={index}
                       textButton={decode(item.text)}
                       onClick={handleButtonClick}
-                      value={item.isCorrect}></Button>
+                      value={item.isCorrect}
+                    ></Button>
                   )
                 )}
             </div>
