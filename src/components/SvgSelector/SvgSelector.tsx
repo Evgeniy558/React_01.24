@@ -11,7 +11,8 @@ export const SvgSelector: FC<SvgSelectorType> = ({ id }) => {
           id="like"
           data-name="like"
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 122.88 122.88">
+          viewBox="0 0 122.88 122.88"
+        >
           <title>like-button</title>
           <path d="M61.44,0A61.44,61.44,0,1,1,0,61.44,61.44,61.44,0,0,1,61.44,0Z" fill="#11fa1f" />
           <path
@@ -26,7 +27,8 @@ export const SvgSelector: FC<SvgSelectorType> = ({ id }) => {
           id="dislike"
           data-name="dislike"
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 122.88 122.88">
+          viewBox="0 0 122.88 122.88"
+        >
           <title>dislike-button</title>
           <path d="M61.44,0A61.44,61.44,0,1,1,0,61.44,61.44,61.44,0,0,1,61.44,0Z" fill="red" />
           <path

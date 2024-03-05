@@ -21,7 +21,8 @@ const ProgressBar: FC<ProgressBarProps> = ({ numberOfCurrentQuestion, numberOfQu
       <div className={css.progressBar}>
         <div
           className={css.progressBarFill}
-          style={{ width: `${Math.floor(progressPercentage)}%` }}></div>
+          style={{ width: `${Math.floor(progressPercentage)}%` }}
+        ></div>
       </div>
       <div className={css.progressLable}></div>
     </div>
