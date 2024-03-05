@@ -27,6 +27,5 @@ export const prepareAndShuffleAnswers = (question: QuestionType) => {
     }),
     { text: question.correct_answer, isCorrect: true }
   ]
-  console.log(allAnswers)
   return shuffleArray(allAnswers)
 }
