@@ -23,9 +23,9 @@ const Statistics = () => {
         <h2>Categoreies:</h2>
         {category.length ? renderStatistic(category) : <p>No statistic</p>}
         <h2>Difficulties:</h2>
-        {category.length ? renderStatistic(category) : <p>No statistic</p>}
+        {category.length ? renderStatistic(difficulties) : <p>No statistic</p>}
         <h2>Question type:</h2>
-        {category.length ? renderStatistic(category) : <p>No statistic</p>}
+        {category.length ? renderStatistic(questionsType) : <p>No statistic</p>}
         <div className={css.btn}>
           <Button onClick={handleBackToQuiz} textButton={'Back to quiz'}></Button>
         </div>

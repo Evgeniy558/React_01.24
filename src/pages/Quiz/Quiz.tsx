@@ -25,7 +25,6 @@ interface questionType {
 }
 
 export const ModalWindowContext = createContext<ModalWindowContexType | null>(null)
-console.log('ModalWindowContext', ModalWindowContext)
 const Quiz = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
   const redirectToResultsPage = useRedirectTo(ROUTES.results)

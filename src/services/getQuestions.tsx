@@ -8,7 +8,11 @@ export const getQuestions = createAsyncThunk(
       const data = await responce.json()
       return data.results
     } catch (error) {
-      return rejectWithValue(error.message)
+      if (error instanceof Error) {
+        return rejectWithValue(error.message)
+      } else {
+        return rejectWithValue('An unknown error occurred')
+      }
     }
   }
 )

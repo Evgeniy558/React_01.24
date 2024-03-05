@@ -1,5 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { countAnswers } from './quizSlice'
+import { RootState } from '../store'
+
+type StatisticsList = Record<string, number>[]
+interface StatisticsState {
+  allQuestions: number
+  rightAnswers: number
+  category: StatisticsList
+  difficulties: StatisticsList
+  questionsType: StatisticsList
+}
 
 const initialState = {
   allQuestions: 0,
@@ -8,6 +18,7 @@ const initialState = {
   difficulties: [],
   questionsType: []
 }
+
 const statisticsSlice = createSlice({
   name: 'statistics',
   initialState,
@@ -15,8 +26,8 @@ const statisticsSlice = createSlice({
     setStatisticData(state, action) {
       const { amount, category, type, difficulty } = action.payload
 
-      const updateList = (dataList, key, value) => {
-        const index = dataList.findIndex((item) => Object.keys(item)[0] === key)
+      const updateList = (dataList: any[], key: string, value: number) => {
+        const index = dataList.findIndex((item: string[]) => Object.keys(item)[0] === key)
         if (index !== -1) {
           dataList[index][key] += value
         } else {
