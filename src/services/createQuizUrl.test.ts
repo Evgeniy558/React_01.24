@@ -13,4 +13,14 @@ describe('Test createQuizURL', () => {
       'https://opentdb.com/api.php?amount=15&category=test_category&difficulty=test_difficulty&type=type_test'
     )
   })
+  test('test url with null', () => {
+    const url = createQuizUrl(10, null, 'difficulty not chosen', 'type not chosen')
+    expect(url).toEqual('https://opentdb.com/api.php?amount=10')
+  })
+  test('test url with type not chosen', () => {
+    const url = createQuizUrl(20, 'test_category', 'test_difficulty', 'type not chosen')
+    expect(url).toEqual(
+      'https://opentdb.com/api.php?amount=20&category=test_category&difficulty=test_difficulty'
+    )
+  })
 })
