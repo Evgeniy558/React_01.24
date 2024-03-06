@@ -4,10 +4,11 @@ import Button from '../../components/Button/Button'
 import { useRedirectTo } from '../../hooks/useRedirectTo'
 import { ROUTES } from '../../navigation/routes'
 import css from './Statistics.module.css'
+import { RootState } from '../../redux/store'
 
 const Statistics = () => {
   const { allQuestions, rightAnswers, category, difficulties, questionsType } = useSelector(
-    (state) => state.statistics
+    (state: RootState) => state.statistics
   )
   const redirectToHomePage = useRedirectTo(ROUTES.home)
   const handleBackToQuiz = () => {
@@ -20,11 +21,11 @@ const Statistics = () => {
         <div>Amount of questions answered by user: {allQuestions}</div>
         <div>Amount of correct answers: {rightAnswers}</div>
         <h2>Categoreies:</h2>
-        {category.length && renderStatistic(category)}
+        {category.length ? renderStatistic(category) : <p>No statistic</p>}
         <h2>Difficulties:</h2>
-        {difficulties.length && renderStatistic(difficulties)}
+        {category.length ? renderStatistic(difficulties) : <p>No statistic</p>}
         <h2>Question type:</h2>
-        {questionsType.length && renderStatistic(questionsType)}
+        {category.length ? renderStatistic(questionsType) : <p>No statistic</p>}
         <div className={css.btn}>
           <Button onClick={handleBackToQuiz} textButton={'Back to quiz'}></Button>
         </div>

@@ -1,11 +1,16 @@
-import { forwardRef, useState } from 'react'
+import { ChangeEvent, forwardRef, useState } from 'react'
 import css from './Input.module.css'
-const Input = forwardRef(function Input({ inputText }, ref) {
-  const [error, setError] = useState()
-  const chandleChange = (e) => {
-    const newValue = e.target.value
 
-    if (newValue === '' || isNaN(newValue) || newValue < 5 || newValue > 15) {
+interface InputProps {
+  inputText: string
+}
+
+const Input = forwardRef<HTMLInputElement, InputProps>(function Input({ inputText }, ref) {
+  const [error, setError] = useState('')
+  const chandleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue: number = parseInt(e.target.value)
+
+    if (newValue === null || isNaN(newValue) || newValue < 5 || newValue > 15) {
       setError('Value must be a number between 5 and 15.')
     } else {
       setError('')
@@ -13,13 +18,11 @@ const Input = forwardRef(function Input({ inputText }, ref) {
   }
   return (
     <div className={css.inputContainer}>
-      <label htmlFor={name} className={css.lable}>
+      <label className={css.lable}>
         {inputText}
         <input
           ref={ref}
           type="number"
-          id={name}
-          name={name}
           className={css.inputEl}
           min={5}
           max={15}

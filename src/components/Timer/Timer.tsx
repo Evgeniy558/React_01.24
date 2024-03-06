@@ -5,13 +5,16 @@ import { ROUTES } from '../../navigation/routes'
 import { useDispatch, useSelector } from 'react-redux'
 import { decrementTime, stopTimer } from '../../redux/slices/timerSlice'
 import { setStatisticData } from '../../redux/slices/statisticsSlice'
+import { RootState } from '../../redux/store'
 
 const Timer = () => {
-  const interval = useRef(null)
+  const interval = useRef<number | null>(null)
   const redirectToResultsPage = useRedirectTo(ROUTES.results)
   const dispatch = useDispatch()
-  const { isRunning, minutesLeft, secondsLeft } = useSelector((state) => state.timer)
-  const { amount, category, difficulty, type } = useSelector((state) => state.configuration)
+  const { isRunning, minutesLeft, secondsLeft } = useSelector((state: RootState) => state.timer)
+  const { amount, category, difficulty, type } = useSelector(
+    (state: RootState) => state.configuration
+  )
 
   useEffect(() => {
     if (isRunning) {
@@ -19,7 +22,11 @@ const Timer = () => {
         dispatch(decrementTime())
       }, 1000)
 
-      return () => clearInterval(interval.current)
+      return () => {
+        if (interval.current) {
+          clearInterval(interval.current)
+        }
+      }
     }
     if (minutesLeft === 0 && secondsLeft === 0) {
       dispatch(stopTimer())

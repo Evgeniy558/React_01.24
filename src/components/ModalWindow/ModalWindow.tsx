@@ -3,14 +3,20 @@ import { useRedirectTo } from '../../hooks/useRedirectTo'
 import { ROUTES } from '../../navigation/routes'
 import Button from '../Button/Button'
 import css from './ModalWindow.module.css'
-import { ModalWindowContext } from '../../pages/Quiz'
+import { ModalWindowContext } from '../../pages/Quiz/Quiz'
 
 const ModalWindow = () => {
   const redirectToHome = useRedirectTo(ROUTES.home)
 
-  const { modalIsOpen, setModalIsOpen } = useContext(ModalWindowContext)
+  const context = useContext(ModalWindowContext)
+  if (!context) {
+    console.error('ModalWindowContext was not provided')
+    return null
+  }
+
+  const { modalIsOpen, setModalIsOpen } = context
   useEffect(() => {
-    const handleEsc = (e) => {
+    const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setModalIsOpen(!modalIsOpen)
       }
@@ -33,7 +39,7 @@ const ModalWindow = () => {
         <div className={css.buttonContainer}>
           <Button textButton={'Confirm'} hoverColor="red" onClick={redirectToHome}></Button>
           <Button
-            textButton={'Cancel'}
+            textButton="Cancel"
             onClick={() => {
               setModalIsOpen(!modalIsOpen)
             }}

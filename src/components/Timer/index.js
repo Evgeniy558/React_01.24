@@ -1,1 +1,1 @@
-export * from './Timer.jsx'
+export * from './Timer.tsx'

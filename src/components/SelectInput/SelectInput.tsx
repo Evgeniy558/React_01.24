@@ -1,14 +1,41 @@
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import css from './SelectInput.module.css'
-const SelectInput = forwardRef(function SelectorInput({ inputText, name, data, behavior }, ref) {
-  const selectRef = useRef(null)
-  const [error, setError] = useState('')
 
+interface QuizQuestion {
+  id: string
+  name: string
+  category?: string
+  value: string | number
+}
+
+interface SelectorInputProps {
+  inputText: string
+  name: string
+  data: QuizQuestion[]
+  behavior: 'id' | 'value'
+}
+
+export interface SelectInputRef {
+  getValue: () => any
+}
+
+const SelectInput = forwardRef<SelectInputRef, SelectorInputProps>(function SelectorInput(
+  { inputText, name, data, behavior },
+  ref
+) {
+  const selectRef = useRef<HTMLSelectElement | null>(null)
+  const [error, setError] = useState('')
   useImperativeHandle(ref, () => ({
     getValue: () => {
-      const selectedOption = selectRef.current[selectRef.current.selectedIndex]
+      if (!selectRef.current) {
+        console.error('Select element is not mounted')
+        return { value: `${name} not chosen` }
+      }
+      const selectedOption = selectRef.current[selectRef.current.selectedIndex] as HTMLOptionElement
+
       if (!selectedOption) {
         setError(`Please select a ${name}.`)
+        return { value: `${name} not chosen` }
       }
       setError('')
       return behavior === 'id'
@@ -22,7 +49,7 @@ const SelectInput = forwardRef(function SelectorInput({ inputText, name, data, b
     }
   }))
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (!e.target.value) {
       setError(`Please select a ${name}.`)
     } else {
@@ -39,7 +66,7 @@ const SelectInput = forwardRef(function SelectorInput({ inputText, name, data, b
         className={css.selectEl}
         defaultValue=""
         ref={selectRef}
-        onClick={handleChange}
+        onChange={handleChange}
       >
         <option value="" disabled>
           - Select {name} -

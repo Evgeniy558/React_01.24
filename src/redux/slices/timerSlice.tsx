@@ -45,6 +45,5 @@ const timerSlice = createSlice({
   }
 })
 
-export const { congfigTime, setTimer, decrementTime, startTimer, stopTimer, resetTimer, quizTime } =
-  timerSlice.actions
+export const { decrementTime, startTimer, stopTimer, resetTimer } = timerSlice.actions
 export const timerReducer = timerSlice.reducer

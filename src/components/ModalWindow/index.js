@@ -1,1 +1,1 @@
-export * from './ModalWindow.jsx'
+export * from './ModalWindow.tsx'

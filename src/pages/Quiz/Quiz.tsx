@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react'
+import { ChangeEvent, createContext, useEffect, useState } from 'react'
 import Button from '../../components/Button/Button'
 import ProgressBar from '../../components/ProgressBar/ProgressBar'
 import css from './Quiz.module.css'
@@ -12,15 +12,30 @@ import { stopTimer } from '../../redux/slices/timerSlice'
 import { setStatisticData } from '../../redux/slices/statisticsSlice'
 import { prepareAndShuffleAnswers } from '../../services/prepareAndShuffleAnswers'
 import { decode } from 'html-entities'
+import { RootState } from '../../redux/store'
 
-export const ModalWindowContext = createContext()
+interface ModalWindowContexType {
+  modalIsOpen: boolean
+  setModalIsOpen: (isOpen: boolean) => void
+}
+
+interface questionType {
+  text: string
+  isCorrect: string
+}
+
+export const ModalWindowContext = createContext<ModalWindowContexType | null>(null)
 const Quiz = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
   const redirectToResultsPage = useRedirectTo(ROUTES.results)
   const dispatch = useDispatch()
-  const { amount, category, difficulty, type } = useSelector((state) => state.configuration)
-  const { currentQuestion, questions, questionStatus } = useSelector((state) => state.quiz)
-  const numberOfQuestions = useSelector((state) => state.quiz.questions.length)
+  const { amount, category, difficulty, type } = useSelector(
+    (state: RootState) => state.configuration
+  )
+  const { currentQuestion, questions, questionStatus } = useSelector(
+    (state: RootState) => state.quiz
+  )
+  const numberOfQuestions = useSelector((state: RootState) => state.quiz.questions.length)
 
   useEffect(() => {
     if (currentQuestion > numberOfQuestions && !questionStatus.isLoarding) {
@@ -37,8 +52,9 @@ const Quiz = () => {
     }
   }, [currentQuestion, numberOfQuestions])
 
-  const handleButtonClick = (e) => {
-    dispatch(countAnswers(e.target.value === 'true'))
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const target = e.target as HTMLButtonElement
+    dispatch(countAnswers(target.value === 'true'))
     dispatch(showNextQuestion())
   }
 
@@ -77,14 +93,16 @@ const Quiz = () => {
               }
             >
               {currentQuestion <= numberOfQuestions &&
-                prepareAndShuffleAnswers(questions[currentQuestion - 1]).map((item, index) => (
-                  <Button
-                    key={index}
-                    textButton={decode(item.text)}
-                    onClick={handleButtonClick}
-                    value={item.isCorrect}
-                  ></Button>
-                ))}
+                prepareAndShuffleAnswers(questions[currentQuestion - 1]).map(
+                  (item: questionType, index: number) => (
+                    <Button
+                      key={index}
+                      textButton={decode(item.text)}
+                      onClick={handleButtonClick}
+                      value={item.isCorrect}
+                    ></Button>
+                  )
+                )}
             </div>
             <ProgressBar
               numberOfCurrentQuestion={currentQuestion}

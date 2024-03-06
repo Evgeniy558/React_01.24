@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import Button from '../../components/Button/Button'
-import SelectInput from '../../components/SelectInput/SelectInput'
+import SelectInput, { SelectInputRef } from '../../components/SelectInput/SelectInput'
 import css from './Home.module.css'
 import Input from '../../components/Input/Input'
 import getToken from '../../services/getToken'
@@ -19,25 +19,26 @@ import {
 } from '../../redux/slices/configurationsSlice'
 import { setQuizIsRun } from '../../redux/slices/quizSlice'
 import { useStartQuiz } from '../../hooks/startQuiz'
+import { RootState } from '../../redux/store'
 
 const Home = () => {
   const redirectToStatisticsPage = useRedirectTo(ROUTES.statistics)
   const starQuiz = useStartQuiz()
   const [categories, setCategories] = useState([])
-  const amountRef = useRef()
-  const categoryRef = useRef()
-  const difficultyRef = useRef()
-  const typeRef = useRef()
-  const timeRef = useRef()
+  const amountRef = useRef<HTMLInputElement>(null)
+  const categoryRef = useRef<SelectInputRef>(null)
+  const difficultyRef = useRef<SelectInputRef>(null)
+  const typeRef = useRef<SelectInputRef>(null)
+  const timeRef = useRef<SelectInputRef>(null)
   const dispatch = useDispatch()
-  const quizIsRunning = useSelector((state) => state.quiz.quizIsRunning)
 
+  const quizIsRunning = useSelector((state: RootState) => state.quiz.quizIsRunning)
   const handleStart = () => {
-    const amountValue = amountRef.current.value
-    const categoryValue = categoryRef.current.getValue()
-    const difficultyValue = difficultyRef.current.getValue()
-    const typeValue = typeRef.current.getValue()
-    const timeValue = timeRef.current.getValue()
+    const amountValue = amountRef.current?.value
+    const categoryValue = categoryRef.current?.getValue()
+    const difficultyValue = difficultyRef.current?.getValue()
+    const typeValue = typeRef.current?.getValue()
+    const timeValue = timeRef.current?.getValue()
 
     if (!amountValue) {
       dispatch(setAmount('5'))
@@ -80,7 +81,7 @@ const Home = () => {
         <h1 className={css.title}>QUIZ TIME</h1>
         <p className={css.text}>For starting quiz choose:</p>
         <div className={css.formContainer}>
-          <Input ref={amountRef} inputText="Number of questions" name="numOfQuestions" />
+          <Input ref={amountRef} inputText="Number of questions" />
           <div className={css.inputContainer}>
             <SelectInput
               ref={categoryRef}

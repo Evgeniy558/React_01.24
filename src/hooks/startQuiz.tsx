@@ -5,10 +5,13 @@ import { getQuestions } from '../services/getQuestions'
 import { resetTimer, startTimer } from '../redux/slices/timerSlice'
 import { useRedirectTo } from './useRedirectTo'
 import { ROUTES } from '../navigation/routes'
+import { RootState, useAppDispatch } from '../redux/store'
 
 export const useStartQuiz = () => {
-  const { amount, type, difficulty, category } = useSelector((state) => state.configuration)
-  const dispatch = useDispatch()
+  const { amount, type, difficulty, category } = useSelector(
+    (state: RootState) => state.configuration
+  )
+  const dispatch = useAppDispatch()
   const redirectToQuizPage = useRedirectTo(ROUTES.quiz)
   return () => {
     const quizUrl = createQuizUrl(amount, category.id, difficulty, type)

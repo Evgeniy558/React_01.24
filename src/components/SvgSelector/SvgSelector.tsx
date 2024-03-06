@@ -1,4 +1,9 @@
-export const SvgSelector = ({ id }) => {
+import { FC } from 'react'
+
+interface SvgSelectorType {
+  id: string
+}
+export const SvgSelector: FC<SvgSelectorType> = ({ id }) => {
   switch (id) {
     case 'like':
       return (

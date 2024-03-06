@@ -1,1 +1,1 @@
-export * from './Statistics.jsx'
+export * from './Statistics.tsx'
