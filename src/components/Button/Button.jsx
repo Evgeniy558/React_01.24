@@ -11,7 +11,8 @@ const Button = ({ textButton, onClick, hoverColor = 'green', value = false }) =>
         className={`${css.button} ${hoverClass}`}
         value={value}
         whileHover={{ scale: 1.1 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 10 }}>
+        transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+      >
         {textButton}
       </motion.button>
     </>

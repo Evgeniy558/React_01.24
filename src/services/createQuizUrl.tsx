@@ -1,4 +1,9 @@
-export const createQuizUrl = (amount = 10, category: string, difficulty: string, type: string) => {
+export const createQuizUrl = (
+  amount = 10,
+  category: string | null,
+  difficulty: string,
+  type: string
+) => {
   let baseUrl = `https://opentdb.com/api.php?amount=${amount}`
   if (category !== null) {
     baseUrl += `&category=${category}`
