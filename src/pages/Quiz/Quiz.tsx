@@ -1,4 +1,4 @@
-import { ChangeEvent, createContext, useEffect, useState } from 'react'
+import { ChangeEvent, createContext, useEffect, useMemo, useState } from 'react'
 import Button from '../../components/Button/Button'
 import ProgressBar from '../../components/ProgressBar/ProgressBar'
 import css from './Quiz.module.css'
@@ -13,6 +13,8 @@ import { setStatisticData } from '../../redux/slices/statisticsSlice'
 import { prepareAndShuffleAnswers } from '../../services/prepareAndShuffleAnswers'
 import { decode } from 'html-entities'
 import { RootState } from '../../redux/store'
+import { useLocation } from 'react-router-dom'
+import { getConfigurationState, getQuizState } from '../../redux/selectors/selectors'
 
 interface ModalWindowContexType {
   modalIsOpen: boolean
@@ -26,16 +28,19 @@ interface questionType {
 
 export const ModalWindowContext = createContext<ModalWindowContexType | null>(null)
 const Quiz = () => {
+  const { currentQuestion, questions, questionStatus } = useSelector(getQuizState)
+  const numberOfQuestions = questions.length
+  const { amount, category, difficulty, type } = useSelector(getConfigurationState)
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
+  const preparedAnswers = useMemo(() => {
+    if (currentQuestion <= numberOfQuestions) {
+      return prepareAndShuffleAnswers(questions[currentQuestion - 1])
+    }
+    return []
+  }, [currentQuestion, questions, numberOfQuestions])
+
   const redirectToResultsPage = useRedirectTo(ROUTES.results)
   const dispatch = useDispatch()
-  const { amount, category, difficulty, type } = useSelector(
-    (state: RootState) => state.configuration
-  )
-  const { currentQuestion, questions, questionStatus } = useSelector(
-    (state: RootState) => state.quiz
-  )
-  const numberOfQuestions = useSelector((state: RootState) => state.quiz.questions.length)
 
   useEffect(() => {
     if (currentQuestion > numberOfQuestions && !questionStatus.isLoarding) {
@@ -90,19 +95,15 @@ const Quiz = () => {
                 questions[currentQuestion - 1].type !== 'multiple'
                   ? { gridTemplateRows: 'repeat(1, 1fr)' }
                   : {}
-              }
-            >
+              }>
               {currentQuestion <= numberOfQuestions &&
-                prepareAndShuffleAnswers(questions[currentQuestion - 1]).map(
-                  (item: questionType, index: number) => (
-                    <Button
-                      key={index}
-                      textButton={decode(item.text)}
-                      onClick={handleButtonClick}
-                      value={item.isCorrect}
-                    ></Button>
-                  )
-                )}
+                preparedAnswers.map((item: questionType, index: number) => (
+                  <Button
+                    key={index}
+                    textButton={decode(item.text)}
+                    onClick={handleButtonClick}
+                    value={item.isCorrect}></Button>
+                ))}
             </div>
             <ProgressBar
               numberOfCurrentQuestion={currentQuestion}
@@ -113,7 +114,12 @@ const Quiz = () => {
           <Button textButton={'End quiz'} onClick={handleEndQuiz} hoverColor="red"></Button>
         </section>
       ) : (
-        <p>Loarding...</p>
+        <section className={css.quizContainer}>
+          <div className={css.loaderContainer}>
+            <p>Loarding...</p>
+            <span className={css.loader}></span>
+          </div>
+        </section>
       )}
     </>
   )

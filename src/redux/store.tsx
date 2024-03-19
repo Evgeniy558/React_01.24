@@ -15,7 +15,11 @@ const combinedReducer = combineReducers({
   statistics: statisticsReducer
 })
 
-const persistConfig = { key: 'root', storage, whitelist: ['statistics'] }
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['statistics', 'quiz', 'timer', 'configuration']
+}
 const persistedReducer = persistReducer(persistConfig, combinedReducer)
 
 export const store = configureStore({

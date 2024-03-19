@@ -8,13 +8,12 @@ import { restartQuiz } from '../../redux/slices/quizSlice'
 import { resetTimer, startTimer } from '../../redux/slices/timerSlice'
 import { useStartQuiz } from '../../hooks/startQuiz'
 import { RootState } from '../../redux/store'
+import { getConfigurationState, getQuizState, getTimerState } from '../../redux/selectors/selectors'
 
 const Results = () => {
-  const { type, difficulty, category, time } = useSelector(
-    (state: RootState) => state.configuration
-  )
-  const { questions, rightAnswers } = useSelector((state: RootState) => state.quiz)
-  const quizTime = useSelector((state: RootState) => state.timer.quizTime)
+  const { type, difficulty, category, time } = useSelector(getConfigurationState)
+  const { questions, rightAnswers } = useSelector(getQuizState)
+  const { quizTime } = useSelector(getTimerState)
   const dispatch = useDispatch()
   const redirectToHomePage = useRedirectTo(ROUTES.home)
   const starQuiz = useStartQuiz()

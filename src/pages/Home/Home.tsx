@@ -21,8 +21,14 @@ import {
 import { setQuizIsRun } from '../../redux/slices/quizSlice'
 import { useStartQuiz } from '../../hooks/startQuiz'
 import { RootState } from '../../redux/store'
+import { getQuizState } from '../../redux/selectors/selectors'
 
 const Home = () => {
+  const [questionAmount, setQuestionAmount] = useState<number | null>(null)
+  const handleAmountChange = (newValue?: number | null) => {
+    setQuestionAmount(newValue ?? null)
+  }
+
   const redirectToStatisticsPage = useRedirectTo(ROUTES.statistics)
   const starQuiz = useStartQuiz()
   const [categories, setCategories] = useState([])
@@ -32,8 +38,8 @@ const Home = () => {
   const typeRef = useRef<SelectInputRef>(null)
   const timeRef = useRef<SelectInputRef>(null)
   const dispatch = useDispatch()
+  const { quizIsRunning } = useSelector(getQuizState)
 
-  const quizIsRunning = useSelector((state: RootState) => state.quiz.quizIsRunning)
   const handleStart = () => {
     const amountValue = amountRef.current?.value
     const categoryValue = categoryRef.current?.getValue()
@@ -41,11 +47,7 @@ const Home = () => {
     const typeValue = typeRef.current?.getValue()
     const timeValue = timeRef.current?.getValue()
 
-    if (!amountValue) {
-      dispatch(setAmount('5'))
-    } else {
-      dispatch(setAmount(amountValue))
-    }
+    dispatch(setAmount(amountValue))
     dispatch(setCategory(categoryValue))
     dispatch(setDifficulty(difficultyValue))
     dispatch(setType(typeValue))
@@ -82,7 +84,11 @@ const Home = () => {
         <h1 className={css.title}>QUIZ TIME</h1>
         <p className={css.text}>For starting quiz choose:</p>
         <div className={css.formContainer}>
-          <Input ref={amountRef} inputText="Number of questions" />
+          <Input
+            ref={amountRef}
+            inputText="Number of questions"
+            onChangeValue={handleAmountChange}
+          />
           <div className={css.inputContainer}>
             <SelectInput
               ref={categoryRef}
@@ -109,7 +115,11 @@ const Home = () => {
           </div>
         </div>
         <div className={css.buttonContainer}>
-          <Button textButton="Start quiz" onClick={handleStart} />
+          <Button
+            textButton="Start quiz"
+            onClick={handleStart}
+            isDisable={!questionAmount || questionAmount < 5 || questionAmount > 15}
+          />
           <Button textButton="See my statistics" onClick={redirectToStatisticsPage} />
         </div>
       </section>
