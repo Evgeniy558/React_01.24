@@ -21,6 +21,7 @@ import {
 import { setQuizIsRun } from '../../redux/slices/quizSlice'
 import { useStartQuiz } from '../../hooks/startQuiz'
 import { RootState } from '../../redux/store'
+import { getQuizState } from '../../redux/selectors/selectors'
 
 const Home = () => {
   const [questionAmount, setQuestionAmount] = useState<number | null>(null)
@@ -37,7 +38,7 @@ const Home = () => {
   const typeRef = useRef<SelectInputRef>(null)
   const timeRef = useRef<SelectInputRef>(null)
   const dispatch = useDispatch()
-  const quizIsRunning = useSelector((state: RootState) => state.quiz.quizIsRunning)
+  const { quizIsRunning } = useSelector(getQuizState)
 
   const handleStart = () => {
     const amountValue = amountRef.current?.value
@@ -46,11 +47,6 @@ const Home = () => {
     const typeValue = typeRef.current?.getValue()
     const timeValue = timeRef.current?.getValue()
 
-    // if (!amountValue) {
-    //   dispatch(setAmount('5'))
-    // } else {
-
-    // }
     dispatch(setAmount(amountValue))
     dispatch(setCategory(categoryValue))
     dispatch(setDifficulty(difficultyValue))

@@ -13,6 +13,8 @@ import { setStatisticData } from '../../redux/slices/statisticsSlice'
 import { prepareAndShuffleAnswers } from '../../services/prepareAndShuffleAnswers'
 import { decode } from 'html-entities'
 import { RootState } from '../../redux/store'
+import { useLocation } from 'react-router-dom'
+import { getConfigurationState, getQuizState } from '../../redux/selectors/selectors'
 
 interface ModalWindowContexType {
   modalIsOpen: boolean
@@ -26,10 +28,9 @@ interface questionType {
 
 export const ModalWindowContext = createContext<ModalWindowContexType | null>(null)
 const Quiz = () => {
-  const { currentQuestion, questions, questionStatus } = useSelector(
-    (state: RootState) => state.quiz
-  )
-  const numberOfQuestions = useSelector((state: RootState) => state.quiz.questions.length)
+  const { currentQuestion, questions, questionStatus } = useSelector(getQuizState)
+  const numberOfQuestions = questions.length
+  const { amount, category, difficulty, type } = useSelector(getConfigurationState)
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
   const preparedAnswers = useMemo(() => {
     if (currentQuestion <= numberOfQuestions) {
@@ -40,9 +41,6 @@ const Quiz = () => {
 
   const redirectToResultsPage = useRedirectTo(ROUTES.results)
   const dispatch = useDispatch()
-  const { amount, category, difficulty, type } = useSelector(
-    (state: RootState) => state.configuration
-  )
 
   useEffect(() => {
     if (currentQuestion > numberOfQuestions && !questionStatus.isLoarding) {
